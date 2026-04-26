@@ -1,0 +1,51 @@
+
+<div class="container admin-page-wrap">
+  <div class="admin-actions-row">
+    <%= link_to "Generate Bill", new_admin_bill_path, class: "admin-btn admin-btn--primary" %>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-data-table admin-data-table--bills">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Bill No</th>
+          <th>Date</th>
+          <th>Patient</th>
+          <th>Status</th>
+          <th>Total</th>
+          <th>Paid</th>
+          <th>Due</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @bills.each do |bill| %>
+          <tr>
+            <td>#<%= bill.id %></td>
+            <td><%= bill.bill_number %></td>
+            <td><%= bill.bill_date.strftime("%d/%m/%Y") %></td>
+            <td><%= bill.patient.full_name %></td>
+            <td>
+              <span class="admin-status-badge admin-status-badge--<%= bill.status %>">
+                <%= bill.status.titleize %>
+              </span>
+            </td>
+            <td><%= number_to_currency(bill.total_amount) %></td>
+            <td><%= number_to_currency(bill.amount_paid) %></td>
+            <td><%= number_to_currency(bill.amount_due) %></td>
+            <td>
+              <div class="admin-table-actions">
+                <%= link_to "View", admin_bill_path(bill), class: "admin-link-clear" %>
+                <%= link_to "Edit", edit_admin_bill_path(bill), class: "admin-link-clear" %>
+                <%= link_to "Print", print_admin_bill_path(bill), class: "admin-link-clear" %>
+                <%= link_to "PDF", pdf_admin_bill_path(bill), class: "admin-link-clear" %>
+                <%= link_to "Delete", admin_bill_path(bill), class: "admin-link-clear", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

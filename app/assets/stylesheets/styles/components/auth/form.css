@@ -1,0 +1,57 @@
+.auth-form .field {
+  margin-bottom: 12px;
+}
+
+.auth-form .field label {
+  display: block;
+  margin-bottom: 6px;
+  color: #2e4059;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.auth-form .field input[type="email"],
+.auth-form .field input[type="password"] {
+  width: 100%;
+  border: 1px solid #cdd7e6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+  color: #22344c;
+}
+
+.auth-form .field--checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-form .field--checkbox label {
+  margin: 0;
+}
+
+.auth-hint {
+  display: block;
+  margin-bottom: 6px;
+  color: #8090a8;
+  font-size: 12px;
+}
+
+.auth-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #17c3c8;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.auth-links p {
+  margin: 10px 0 0;
+}
+
+.auth-links a {
+  color: #2d6886;
+}

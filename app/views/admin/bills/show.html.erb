@@ -1,0 +1,53 @@
+<div class="container admin-page-wrap">
+  <div class="admin-actions-row">
+    <%= link_to "Edit Bill", edit_admin_bill_path(@bill), class: "admin-btn admin-btn--light" %>
+    <%= link_to "Print View", print_admin_bill_path(@bill), class: "admin-btn admin-btn--light" %>
+    <%= link_to "Download PDF", pdf_admin_bill_path(@bill), class: "admin-btn admin-btn--primary" %>
+  </div>
+
+  <p><strong>Bill No:</strong> <%= @bill.bill_number %></p>
+  <p><strong>Patient:</strong> <%= @bill.patient.full_name %></p>
+  <p><strong>Date:</strong> <%= @bill.bill_date %></p>
+  <p><strong>Status:</strong> <%= @bill.status %></p>
+  <p><strong>Amount Paid:</strong> <%= number_to_currency(@bill.amount_paid) %></p>
+  <p><strong>Amount Due:</strong> <%= number_to_currency(@bill.amount_due) %></p>
+
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+      <th>Test</th>
+      <th>Qty</th>
+      <th>Unit Price</th>
+      <th>Subtotal</th>
+      <th>Discount</th>
+      <th>Line Total</th>
+    </tr>
+    <% @bill.bill_items.each do |item| %>
+      <tr>
+        <td><%= item.test.name %></td>
+        <td><%= item.quantity %></td>
+        <td><%= number_to_currency(item.unit_price) %></td>
+        <td><%= number_to_currency(item.subtotal) %></td>
+        <td>
+          <% if item.discount_type == "none" || item.discount_amount.to_d.zero? %>
+            —
+          <% elsif item.discount_type == "percent" %>
+            <%= number_to_percentage(item.discount_value, precision: 2) %>
+            (<%= number_to_currency(item.discount_amount) %>)
+          <% else %>
+            <%= number_to_currency(item.discount_amount) %>
+          <% end %>
+        </td>
+        <td><%= number_to_currency(item.line_total) %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <p><strong>Gross Total:</strong> <%= number_to_currency(@bill.gross_amount) %></p>
+  <p><strong>Total Discount:</strong> <%= number_to_currency(@bill.total_discount) %></p>
+  <p><strong>Net Total:</strong> <%= number_to_currency(@bill.total_amount) %></p>
+  <p><strong>Amount Paid (in words):</strong> <%= @bill.amount_paid_in_words.to_s.capitalize %></p>
+  <p><strong>Due:</strong> <%= number_to_currency(@bill.amount_due) %></p>
+  <% if @bill.amount_due.to_d.positive? %>
+    <p><em>Report download should be blocked until payment is complete.</em></p>
+  <% end %>
+</div>

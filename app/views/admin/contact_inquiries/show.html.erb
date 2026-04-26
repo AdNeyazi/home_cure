@@ -1,0 +1,34 @@
+
+<div class="container admin-page-wrap">
+  <div class="patient-form-card">
+    <h1 class="patient-form-title">Contact Inquiry</h1>
+    <p class="patient-form-subtitle">Received on <%= @contact_inquiry.created_at.strftime("%d %b %Y, %I:%M %p") %></p>
+
+    <div class="patient-form-grid">
+      <div class="patient-field">
+        <label>Name</label>
+        <input type="text" value="<%= @contact_inquiry.full_name %>" disabled>
+      </div>
+      <div class="patient-field">
+        <label>Email</label>
+        <input type="text" value="<%= @contact_inquiry.email %>" disabled>
+      </div>
+      <div class="patient-field">
+        <label>Phone</label>
+        <input type="text" value="<%= @contact_inquiry.phone_number.presence || "-" %>" disabled>
+      </div>
+      <div class="patient-field">
+        <label>Subject</label>
+        <input type="text" value="<%= @contact_inquiry.subject %>" disabled>
+      </div>
+      <div class="patient-field patient-field--full">
+        <label>Message</label>
+        <textarea rows="6" disabled><%= @contact_inquiry.message %></textarea>
+      </div>
+    </div>
+
+    <div class="patient-form-actions">
+      <%= link_to "Back to Inbox", admin_contact_inquiries_path, class: "admin-btn admin-btn--light" %>
+    </div>
+  </div>
+</div>

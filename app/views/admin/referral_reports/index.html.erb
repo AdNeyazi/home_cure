@@ -1,0 +1,84 @@
+<div class="container admin-page-wrap">
+  <section class="admin-report-filter-card">
+    <h3 class="admin-report-filter-card__title">Doctor Referral Monthly Business</h3>
+    <%= form_with url: admin_referral_reports_path,
+                  method: :get,
+                  local: true,
+                  data: { turbo: false } do %>
+      <div class="admin-report-filter-grid">
+        <p class="admin-report-filter-field">
+          <label for="month" class="admin-report-filter-label">Month</label>
+          <%= select_tag :month,
+                         options_for_select(Date::MONTHNAMES.compact.each_with_index.map { |m, i| [m, i + 1] }, @selected_month),
+                         class: "admin-report-filter-input" %>
+        </p>
+        <p class="admin-report-filter-field">
+          <label for="year" class="admin-report-filter-label">Year</label>
+          <%= select_tag :year,
+                         options_for_select(((Date.current.year - 5)..(Date.current.year + 1)).to_a.reverse, @selected_year),
+                         class: "admin-report-filter-input" %>
+        </p>
+        <p class="admin-report-filter-field admin-report-filter-field--wide">
+          <label for="doctor_id" class="admin-report-filter-label">Doctor</label>
+          <%= select_tag :doctor_id,
+                         options_for_select([["All Doctors", ""]] + @doctors.map { |doctor| [doctor.full_name, doctor.id] }, @selected_doctor_id),
+                         class: "admin-report-filter-input" %>
+        </p>
+        <p class="admin-report-filter-field admin-report-filter-field--action">
+          <%= button_tag "Apply Filters", type: :submit, class: "admin-btn admin-btn--primary" %>
+        </p>
+      </div>
+      <small class="admin-report-filter-note">
+        Includes only patients assigned to a doctor (walk-ins are excluded).
+      </small>
+    <% end %>
+  </section>
+
+  <div class="admin-actions-row">
+    <%= form_with url: admin_referral_reports_export_path, method: :get, local: true, data: { turbo: false } do %>
+      <%= hidden_field_tag :month, @selected_month %>
+      <%= hidden_field_tag :year, @selected_year %>
+      <%= hidden_field_tag :doctor_id, @selected_doctor_id %>
+      <%= button_tag "Download as CSV", type: :submit, class: "admin-btn admin-btn--primary" %>
+    <% end %>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-data-table">
+      <thead>
+        <tr>
+          <th>Patient Name</th>
+          <th>Phone</th>
+          <th>Doctor (Referred By)</th>
+          <th>Tests Done</th>
+          <th>Bill Amount</th>
+          <th>Discount</th>
+          <th>Amount Paid</th>
+          <th>Amount Due</th>
+          <th>Bill Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @rows.any? %>
+          <% @rows.each do |row| %>
+            <tr>
+              <td><%= row[:patient_name] %></td>
+              <td><%= row[:phone] %></td>
+              <td><%= row[:doctor_name] %></td>
+              <td><%= row[:tests_done].presence || "-" %></td>
+              <td><%= row[:bill_amount] %></td>
+              <td><%= row[:discount] %></td>
+              <td><%= row[:amount_paid] %></td>
+              <td><%= row[:amount_due] %></td>
+              <td><%= row[:bill_status] %></td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="9" style="text-align: center;">No referral billing data found for the selected filters.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

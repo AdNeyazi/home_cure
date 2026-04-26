@@ -1,0 +1,33 @@
+
+<div class="container admin-page-wrap">
+  <p class="admin-actions-row">
+    <%= link_to "Add Patient", new_admin_patient_path, class: "admin-btn admin-btn--primary" %>
+  </p>
+
+  <div class="admin-table-wrap">
+    <table class="admin-data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Referred By Doctor</th>
+          <th>Tests</th>
+          <th>Total Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @patients.each do |patient| %>
+          <tr>
+            <td><%= link_to patient.full_name, admin_patient_path(patient) %></td>
+            <td><%= patient.phone_number %></td>
+            <td><%= patient.email %></td>
+            <td><%= patient.doctor&.full_name.presence || "Self / Walk-in" %></td>
+            <td><%= patient.selected_test_names.presence || "-" %></td>
+            <td><%= number_to_currency(patient.selected_tests_total) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

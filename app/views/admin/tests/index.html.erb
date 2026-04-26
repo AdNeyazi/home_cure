@@ -1,0 +1,34 @@
+
+<div class="container admin-page-wrap">
+  <p class="admin-actions-row">
+    <%= link_to "Add Test", new_admin_test_path, class: "admin-btn admin-btn--primary" %>
+  </p>
+
+  <div class="admin-table-wrap">
+    <table class="admin-data-table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tests.each do |test| %>
+          <tr>
+            <td><%= test.code %></td>
+            <td><%= test.name %></td>
+            <td><%= number_to_currency(test.price) %></td>
+            <td>
+              <div class="admin-table-actions">
+                <%= link_to "Edit", edit_admin_test_path(test) %>
+                <%= link_to "Delete", admin_test_path(test), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

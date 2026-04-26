@@ -1,0 +1,74 @@
+<div class="container admin-page-wrap">
+  <section class="admin-form-card">
+    <h2 class="admin-form-card__title"><%= bill.persisted? ? "Edit Bill" : "Generate Bill" %></h2>
+    <p class="admin-form-card__subtitle">Set billing details, payment status, and line-item discounts.</p>
+
+    <%= form_with model: [:admin, bill], class: "admin-form" do |f| %>
+      <div class="admin-form-grid">
+        <p class="admin-form-field">
+          <%= f.label :patient_id, "Patient" %>
+          <%= f.collection_select :patient_id, Patient.order(:full_name), :id, :full_name, { prompt: "Select patient" }, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :bill_date %>
+          <%= f.date_field :bill_date, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :bill_number, "Bill Number (optional)" %>
+          <%= f.text_field :bill_number, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :status %>
+          <%= f.select :status, Bill::STATUSES, {}, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :amount_paid %>
+          <%= f.number_field :amount_paid, min: 0, step: 0.01, class: "admin-form-input" %>
+        </p>
+      </div>
+
+      <div class="admin-form-section">
+        <h3 class="admin-form-section__title">Bill Items</h3>
+        <% f.fields_for :bill_items do |item_fields| %>
+          <fieldset class="admin-line-item">
+            <div class="admin-form-grid">
+              <p class="admin-form-field admin-form-field--full">
+                <%= item_fields.label :test_id, "Test" %>
+                <%= item_fields.collection_select :test_id, Test.order(:name), :id, :name, { prompt: "Select test" }, class: "admin-form-input" %>
+              </p>
+              <p class="admin-form-field">
+                <%= item_fields.label :quantity %>
+                <%= item_fields.number_field :quantity, min: 1, class: "admin-form-input" %>
+              </p>
+              <p class="admin-form-field">
+                <%= item_fields.label :unit_price %>
+                <%= item_fields.number_field :unit_price, step: 0.01, class: "admin-form-input" %>
+              </p>
+              <p class="admin-form-field">
+                <%= item_fields.label :discount_type, "Discount" %>
+                <%= item_fields.select :discount_type, BillItem::DISCOUNT_TYPES.map { |t| [t.titleize, t] }, {}, class: "admin-form-input" %>
+              </p>
+              <p class="admin-form-field">
+                <%= item_fields.label :discount_value, "Discount value" %>
+                <%= item_fields.number_field :discount_value, min: 0, step: 0.01, class: "admin-form-input" %>
+              </p>
+              <% if item_fields.object.persisted? %>
+                <p class="admin-form-field admin-form-field--full">
+                  <%= item_fields.check_box :_destroy %>
+                  <%= item_fields.label :_destroy, "Remove this item" %>
+                </p>
+              <% end %>
+            </div>
+          </fieldset>
+        <% end %>
+        <p class="admin-form-help">
+          Percent discount supports 0 to 100. Fixed amount discount is capped at line subtotal.
+        </p>
+      </div>
+
+      <div class="admin-form-actions">
+        <%= f.submit bill.persisted? ? "Update Bill" : "Create Bill", class: "admin-btn admin-btn--primary" %>
+      </div>
+    <% end %>
+  </section>
+</div>

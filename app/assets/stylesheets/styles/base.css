@@ -1,0 +1,26 @@
+:root {
+  --primary: #17c3c8;
+  --dark: #22252d;
+  --text: #2a2d34;
+  --muted: #7a7f8b;
+  --line: #e7e9ef;
+  --font-sans: "Alegreya", Georgia, "Times New Roman", serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { text-decoration: none; }
+
+.container {
+  width: min(1140px, 92%);
+  margin: 0 auto;
+}

@@ -1,0 +1,101 @@
+<article class="blog-article">
+  <div class="container">
+    <div class="blog-article-layout">
+      <div>
+        <p class="blog-article__back"><%= link_to "← Back to Blog", blog_posts_path %></p>
+        <span class="blog-chip"><%= @post.category %></span>
+        <h1><%= @post.title %></h1>
+        <p class="blog-article__meta"><%= @post.author_name %> · <%= @post.published_at.strftime("%d %b %Y") %></p>
+        <% if @post.reviewer_name.present? %>
+          <p class="blog-article__reviewed">Medically reviewed by <strong><%= @post.reviewer_name %></strong><%= " · #{@post.reviewed_at.strftime("%d %b %Y")}" if @post.reviewed_at.present? %></p>
+        <% end %>
+
+        <% if @post.cover_image_url.present? %>
+          <div class="blog-article__hero" style="background-image: url('<%= @post.cover_image_url %>');"></div>
+        <% end %>
+
+        <div class="blog-article__content">
+          <%= simple_format(@post.content) %>
+        </div>
+
+        <section class="blog-convert-strip">
+          <h2>Need this test done quickly?</h2>
+          <p>Book your slot online and get fast, reliable processing from our lab team.</p>
+          <div class="blog-convert-strip__actions">
+            <%= link_to "Book a Test", root_path, class: "admin-btn admin-btn--primary" %>
+            <%= link_to "Talk to Support", new_user_session_path, class: "admin-btn admin-btn--light" %>
+          </div>
+        </section>
+
+        <% if @post.preparation_tip_list.any? %>
+          <section class="blog-educate-card">
+            <h2>How to prepare</h2>
+            <ul>
+              <% @post.preparation_tip_list.each do |tip| %>
+                <li><%= tip %></li>
+              <% end %>
+            </ul>
+          </section>
+        <% end %>
+
+        <% if @post.faq_list.any? %>
+          <section class="blog-educate-card">
+            <h2>Frequently asked questions</h2>
+            <div class="blog-faq-list">
+              <% @post.faq_list.each do |faq| %>
+                <details>
+                  <summary><%= faq[:question] %></summary>
+                  <p><%= faq[:answer] %></p>
+                </details>
+              <% end %>
+            </div>
+          </section>
+        <% end %>
+
+        <section class="blog-disclaimer">
+          <strong>Medical disclaimer:</strong>
+          <span><%= @post.disclaimer_text %></span>
+        </section>
+
+        <section class="blog-convert-form">
+          <h2>Request a callback</h2>
+          <p>Share your details and our team will contact you with test guidance.</p>
+          <form>
+            <div class="blog-convert-form__grid">
+              <input type="text" placeholder="Your full name">
+              <input type="tel" placeholder="Phone number">
+              <input type="email" placeholder="Email address">
+              <input type="text" placeholder="Test name or health concern">
+            </div>
+            <button type="button" class="admin-btn admin-btn--primary">Request Callback</button>
+          </form>
+        </section>
+
+        <% if @related_posts.any? %>
+          <section class="blog-related">
+            <h2>Related posts</h2>
+            <div class="blog-grid">
+              <% @related_posts.each do |post| %>
+                <article class="blog-card">
+                  <div class="blog-card__body">
+                    <span class="blog-chip"><%= post.category %></span>
+                    <h3><%= link_to post.title, blog_post_path(post) %></h3>
+                    <p><%= post.excerpt %></p>
+                  </div>
+                </article>
+              <% end %>
+            </div>
+          </section>
+        <% end %>
+      </div>
+
+      <aside class="blog-sticky-cta">
+        <h3>Take the next step</h3>
+        <p>Get expert support and schedule your test with confidence.</p>
+        <%= link_to "Book Test Now", root_path, class: "admin-btn admin-btn--primary" %>
+        <%= link_to "Create Account", new_user_registration_path, class: "admin-btn admin-btn--light" %>
+        <%= link_to "Talk to Lab Team", new_user_session_path, class: "admin-btn admin-btn--light" %>
+      </aside>
+    </div>
+  </div>
+</article>

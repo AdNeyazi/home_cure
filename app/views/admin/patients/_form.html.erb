@@ -1,0 +1,78 @@
+<div class="container admin-page-wrap">
+  <div class="patient-form-card">
+    <h2 class="patient-form-title"><%= patient.persisted? ? "Edit Patient" : "Create Patient" %></h2>
+    <p class="patient-form-subtitle">Fill patient details, referral doctor, and select required tests.</p>
+
+    <% if patient.errors.any? %>
+      <div class="patient-form-errors">
+        <strong>Please fix the following:</strong>
+        <ul>
+          <% patient.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: [:admin, patient], html: { class: "patient-form" } do |f| %>
+      <div class="patient-form-grid">
+        <div class="patient-field">
+          <%= f.label :full_name %>
+          <%= f.text_field :full_name, placeholder: "Enter full name" %>
+        </div>
+
+        <div class="patient-field">
+          <%= f.label :age %>
+          <%= f.number_field :age, min: 0, placeholder: "Enter age" %>
+        </div>
+
+        <div class="patient-field">
+          <%= f.label :date_of_birth %>
+          <%= f.date_field :date_of_birth %>
+        </div>
+
+        <div class="patient-field">
+          <%= f.label :gender %>
+          <%= f.select :gender, ["Male", "Female", "Other"], { include_blank: "Select Gender" } %>
+        </div>
+
+        <div class="patient-field">
+          <%= f.label :phone_number %>
+          <%= f.telephone_field :phone_number, placeholder: "Enter phone number" %>
+        </div>
+
+        <div class="patient-field">
+          <%= f.label :email %>
+          <%= f.email_field :email, placeholder: "Enter email address" %>
+        </div>
+
+        <div class="patient-field patient-field--full">
+          <%= f.label :address %>
+          <%= f.text_area :address, rows: 3, placeholder: "Enter complete address" %>
+        </div>
+
+        <div class="patient-field patient-field--full">
+          <%= f.label :doctor_id, "Referred By Doctor" %>
+          <%= f.collection_select :doctor_id, @doctors, :id, :full_name, { prompt: "Select Doctor", include_blank: true } %>
+        </div>
+      </div>
+
+      <div class="patient-tests-section">
+        <h3>Select Tests</h3>
+        <div class="admin-test-list">
+          <% selected_test_ids = patient.selected_tests.map(&:id) %>
+          <% @tests.each do |test| %>
+            <label class="admin-test-item">
+              <%= check_box_tag "patient[test_ids][]", test.id, selected_test_ids.include?(test.id) %>
+              <span><%= test.name %> (<%= number_to_currency(test.price) %>)</span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="patient-form-actions">
+        <%= f.submit(patient.persisted? ? "Update Patient" : "Create Patient", class: "admin-btn admin-btn--primary") %>
+      </div>
+    <% end %>
+  </div>
+</div>

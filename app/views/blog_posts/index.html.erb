@@ -1,0 +1,49 @@
+<section class="blog-page">
+  <div class="container">
+    <header class="blog-header">
+      <p class="blog-header__eyebrow">Health education hub</p>
+      <h1>Lab health blog</h1>
+      <p>Explore practical test guides, preventive care tips, and easy-to-understand health articles.</p>
+    </header>
+
+    <%= form_with url: blog_posts_path, method: :get, local: true, class: "blog-filters" do %>
+      <%= text_field_tag :q, @query, placeholder: "Search by title, keyword, or topic" %>
+      <%= select_tag :category, options_for_select([["All categories", ""]] + @categories.map { |c| [c, c] }, @category) %>
+      <%= submit_tag "Filter", class: "admin-btn admin-btn--primary" %>
+    <% end %>
+
+    <% if @featured_post.present? %>
+      <article class="blog-featured">
+        <% if @featured_post.cover_image_url.present? %>
+          <div class="blog-featured__media" style="background-image: url('<%= @featured_post.cover_image_url %>');"></div>
+        <% end %>
+        <div class="blog-featured__content">
+          <span class="blog-chip"><%= @featured_post.category %></span>
+          <h2><%= link_to @featured_post.title, blog_post_path(@featured_post) %></h2>
+          <p><%= @featured_post.excerpt %></p>
+          <small><%= @featured_post.author_name %> · <%= @featured_post.published_at.strftime("%d %b %Y") %></small>
+        </div>
+      </article>
+    <% end %>
+
+    <div class="blog-grid">
+      <% if @posts.any? %>
+        <% @posts.each do |post| %>
+          <article class="blog-card">
+            <% if post.cover_image_url.present? %>
+              <div class="blog-card__media" style="background-image: url('<%= post.cover_image_url %>');"></div>
+            <% end %>
+            <div class="blog-card__body">
+              <span class="blog-chip"><%= post.category %></span>
+              <h3><%= link_to post.title, blog_post_path(post) %></h3>
+              <p><%= post.excerpt %></p>
+              <small><%= post.author_name %> · <%= post.published_at.strftime("%d %b %Y") %></small>
+            </div>
+          </article>
+        <% end %>
+      <% else %>
+        <p class="blog-empty">No blog posts found for this filter.</p>
+      <% end %>
+    </div>
+  </div>
+</section>

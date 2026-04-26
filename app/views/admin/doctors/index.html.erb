@@ -1,0 +1,34 @@
+
+<div class="container admin-page-wrap">
+  <p class="admin-actions-row">
+    <%= link_to "Add Doctor", new_admin_doctor_path, class: "admin-btn admin-btn--primary" %>
+  </p>
+
+  <div class="admin-table-wrap">
+    <table class="admin-data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Specialization</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @doctors.each do |doctor| %>
+          <tr>
+            <td><%= doctor.full_name %></td>
+            <td><%= doctor.specialization %></td>
+            <td><%= doctor.email %></td>
+            <td>
+              <div class="admin-table-actions">
+                <%= link_to "Edit", edit_admin_doctor_path(doctor) %>
+                <%= link_to "Delete", admin_doctor_path(doctor), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

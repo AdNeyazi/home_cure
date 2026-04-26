@@ -1,0 +1,31 @@
+<div class="container admin-page-wrap">
+  <section class="admin-form-card">
+    <h2 class="admin-form-card__title"><%= test.persisted? ? "Edit Test" : "Add Test" %></h2>
+    <p class="admin-form-card__subtitle">Define test code, pricing, and description used in billing.</p>
+
+    <%= form_with model: [:admin, test], class: "admin-form" do |f| %>
+      <div class="admin-form-grid">
+        <p class="admin-form-field">
+          <%= f.label :code %>
+          <%= f.text_field :code, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field admin-form-field--full">
+          <%= f.label :description %>
+          <%= f.text_area :description, class: "admin-form-input", rows: 4 %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :price %>
+          <%= f.number_field :price, step: 0.01, min: 0, class: "admin-form-input" %>
+        </p>
+      </div>
+
+      <div class="admin-form-actions">
+        <%= f.submit test.persisted? ? "Update Test" : "Create Test", class: "admin-btn admin-btn--primary" %>
+      </div>
+    <% end %>
+  </section>
+</div>

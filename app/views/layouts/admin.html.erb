@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Admin · HomeCure Lab" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="admin-body">
+    <%= render "admin/shared/sidebar" %>
+    <div class="admin-shell">
+      <%= render "admin/shared/breadcrumbs" %>
+      <main class="admin-main">
+        <%= yield %>
+      </main>
+    </div>
+    <aside class="admin-fab-dock" aria-label="Quick links">
+      <%= link_to root_path, class: "admin-fab-dock__item", title: "Home" do %>
+        <span class="admin-fab-dock__icon">⌂</span>
+        <span>Home</span>
+      <% end %>
+      <%= link_to admin_dashboard_path, class: "admin-fab-dock__item", title: "Dashboard" do %>
+        <span class="admin-fab-dock__icon">▣</span>
+        <span>Manage</span>
+      <% end %>
+    </aside>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+
+<div class="container admin-page-wrap">
+  <div class="admin-table-wrap" style="max-width: 820px;">
+    <table class="admin-data-table" style="min-width: 100%;">
+      <tbody>
+        <tr>
+          <td><strong>Name</strong></td>
+          <td><%= @patient.full_name %></td>
+        </tr>
+        <tr>
+          <td><strong>Phone</strong></td>
+          <td><%= @patient.phone_number.presence || "-" %></td>
+        </tr>
+        <tr>
+          <td><strong>Email</strong></td>
+          <td><%= @patient.email.presence || "-" %></td>
+        </tr>
+        <tr>
+          <td><strong>Referred By Doctor</strong></td>
+          <td><%= @patient.doctor&.full_name.presence || "Self / Walk-in" %></td>
+        </tr>
+        <tr>
+          <td><strong>Tests</strong></td>
+          <td><%= @patient.selected_test_names.presence || "-" %></td>
+        </tr>
+        <tr>
+          <td><strong>Total Amount</strong></td>
+          <td><%= number_to_currency(@patient.selected_tests_total) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

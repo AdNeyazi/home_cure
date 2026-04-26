@@ -1,0 +1,39 @@
+<div class="container admin-page-wrap">
+  <section class="admin-form-card">
+    <h2 class="admin-form-card__title"><%= report.persisted? ? "Edit Report" : "Add Report" %></h2>
+    <p class="admin-form-card__subtitle">Attach lab report details with patient, doctor, and test mapping.</p>
+
+    <%= form_with model: [:admin, report], class: "admin-form" do |f| %>
+      <div class="admin-form-grid">
+        <p class="admin-form-field">
+          <%= f.label :patient_id, "Patient" %>
+          <%= f.collection_select :patient_id, Patient.order(:full_name), :id, :full_name, { prompt: "Select patient" }, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :doctor_id, "Doctor" %>
+          <%= f.collection_select :doctor_id, Doctor.order(:full_name), :id, :full_name, { prompt: "Select doctor" }, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :test_id, "Test" %>
+          <%= f.collection_select :test_id, Test.order(:name), :id, :name, { prompt: "Select test" }, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :reported_on %>
+          <%= f.date_field :reported_on, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field admin-form-field--full">
+          <%= f.label :file_path, "Report File Path / URL" %>
+          <%= f.text_field :file_path, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field admin-form-field--full">
+          <%= f.label :notes %>
+          <%= f.text_area :notes, class: "admin-form-input", rows: 4 %>
+        </p>
+      </div>
+
+      <div class="admin-form-actions">
+        <%= f.submit report.persisted? ? "Update Report" : "Create Report", class: "admin-btn admin-btn--primary" %>
+      </div>
+    <% end %>
+  </section>
+</div>

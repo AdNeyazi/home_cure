@@ -1,0 +1,29 @@
+.topbar {
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar__left,
+.topbar__right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.topbar__btn {
+  border: 1px solid #ffffff;
+  padding: 8px 12px;
+  color: #ffffff;
+}
+
+@media (max-width: 640px) {
+  .topbar__right span:first-child { display: none; }
+}

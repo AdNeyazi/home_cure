@@ -1,0 +1,39 @@
+
+<div class="container admin-page-wrap">
+  <div class="admin-actions-row">
+    <%= link_to "Add Report", new_admin_report_path, class: "admin-btn admin-btn--primary" %>
+    <%= link_to "Doctor Referral Business", admin_referral_reports_path, class: "admin-btn admin-btn--light" %>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-data-table admin-data-table--reports">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Patient</th>
+          <th>Doctor</th>
+          <th>Test</th>
+          <th>File</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @reports.each do |report| %>
+          <tr>
+            <td><%= report.reported_on&.strftime("%d/%m/%Y") || "-" %></td>
+            <td><%= report.patient.full_name %></td>
+            <td><%= report.doctor&.full_name || "-" %></td>
+            <td><%= report.test&.name || "-" %></td>
+            <td class="admin-report-file"><%= report.file_path.presence || "-" %></td>
+            <td>
+              <div class="admin-table-actions">
+                <%= link_to "Edit", edit_admin_report_path(report), class: "admin-link-clear" %>
+                <%= link_to "Delete", admin_report_path(report), class: "admin-link-clear", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

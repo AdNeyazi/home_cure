@@ -1,0 +1,48 @@
+<aside class="admin-sidebar">
+  <div class="admin-sidebar__brand">
+    <div class="admin-sidebar__logo" aria-hidden="true"></div>
+    <%= link_to root_path, class: "admin-sidebar__brand-text" do %>
+      <div class="admin-sidebar__title">Home<span>Cure</span></div>
+      <div class="admin-sidebar__tagline">Patient management</div>
+    <% end %>
+  </div>
+
+  <nav class="admin-sidebar__nav" aria-label="Admin">
+    <%= link_to admin_dashboard_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:dashboard)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">◉</span>
+      Dashboard
+    <% end %>
+    <%= link_to admin_patients_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:patients)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">◎</span>
+      Patients
+    <% end %>
+    <%= link_to admin_reports_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:reports)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">▤</span>
+      Reports
+    <% end %>
+    <%= link_to admin_referral_reports_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:referral_reports)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">◈</span>
+      Referral Reports
+    <% end %>
+    <%= link_to admin_doctors_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:doctors)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">◆</span>
+      Doctors
+    <% end %>
+    <%= link_to admin_tests_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:tests)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">◇</span>
+      Tests
+    <% end %>
+    <%= link_to admin_bills_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:bills)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">₹</span>
+      Bills
+    <% end %>
+    <%= link_to edit_user_registration_path, class: "admin-sidebar__link #{"is-active" if request.path.include?("/users/edit")}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">⚙</span>
+      Settings
+    <% end %>
+  </nav>
+
+  <div class="admin-sidebar__footer">
+    © <%= Time.current.year %> HomeCure
+  </div>
+</aside>

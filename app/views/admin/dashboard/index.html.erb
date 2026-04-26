@@ -1,0 +1,117 @@
+<% content_for :title, "Dashboard · HomeCure Lab" %>
+
+<section class="dash-dashboard">
+  <header class="dash-page-header">
+    <div>
+      <h1>Dashboard</h1>
+    </div>
+    <div class="dash-page-header__actions">
+      <span class="dash-date-pill">Today: <%= Time.current.strftime("%d %b") %></span>
+      <%= link_to "+ Add Patient", new_admin_patient_path, class: "dash-btn-primary" %>
+    </div>
+  </header>
+
+  <div class="dash-kpi-grid">
+    <article class="dash-kpi-card">
+      <p class="dash-kpi-card__label">Total Patients</p>
+      <p class="dash-kpi-card__value"><%= @total_patients %></p>
+      <p class="dash-kpi-card__hint">All time</p>
+    </article>
+    <article class="dash-kpi-card">
+      <p class="dash-kpi-card__label">Pending</p>
+      <p class="dash-kpi-card__value dash-kpi-card__value--orange"><%= @pending_bills_count %></p>
+      <p class="dash-kpi-card__hint">Awaiting collection</p>
+    </article>
+    <article class="dash-kpi-card">
+      <p class="dash-kpi-card__label">Processing</p>
+      <p class="dash-kpi-card__value dash-kpi-card__value--blue"><%= @processing_count %></p>
+      <p class="dash-kpi-card__hint">In lab / pending file</p>
+    </article>
+    <article class="dash-kpi-card">
+      <p class="dash-kpi-card__label">Revenue</p>
+      <p class="dash-kpi-card__value dash-kpi-card__value--green"><%= number_to_currency(@revenue_total, unit: "₹", precision: 0) %></p>
+      <p class="dash-kpi-card__hint"><%= @revenue_completed_count %> completed</p>
+    </article>
+  </div>
+
+  <div class="dash-table-panel">
+    <div class="dash-table-panel__head">
+      <h2>All Patients (<%= @patients.size %>)</h2>
+      <%= form_with url: admin_dashboard_path, method: :get, local: true, class: "dash-search" do %>
+        <span aria-hidden="true">🔍</span>
+        <%= text_field_tag :q, @q, placeholder: "Search by name, phone..." %>
+      <% end %>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Age / Gender</th>
+            <th>Phone</th>
+            <th>Tests</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @patients.any? %>
+            <% @patients.each do |patient| %>
+              <% status = patient_bill_status_badge(patient) %>
+              <tr>
+                <td>
+                  <div class="dash-patient-cell">
+                    <div class="dash-avatar <%= patient_avatar_tone(patient) %>"><%= patient_initials(patient.full_name) %></div>
+                    <div>
+                      <div class="dash-patient-name"><%= patient.full_name %></div>
+                      <div class="dash-patient-id">P<%= patient.id.to_s.rjust(3, "0") %></div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <%= patient.age.presence || "—" %>
+                  <% if patient.gender.present? %>
+                    / <%= patient.gender %>
+                  <% end %>
+                </td>
+                <td><%= patient.phone_number.presence || "—" %></td>
+                <td>
+                  <div class="dash-tags">
+                    <% tests = patient.selected_tests %>
+                    <% if tests.any? %>
+                      <% tests.first(4).each do |test| %>
+                        <span class="dash-tag"><%= test.code %></span>
+                      <% end %>
+                      <% if tests.size > 4 %>
+                        <span class="dash-tag">+<%= tests.size - 4 %></span>
+                      <% end %>
+                    <% else %>
+                      <span class="dash-tag">—</span>
+                    <% end %>
+                  </div>
+                </td>
+                <td><%= number_to_currency(patient.selected_tests_total, unit: "₹", precision: 0) %></td>
+                <td>
+                  <%= patient.primary_bill&.bill_date&.strftime("%d/%m/%Y") || patient.created_at.strftime("%d/%m/%Y") %>
+                </td>
+                <td>
+                  <span class="dash-status dash-status--<%= status[:variant] %>"><%= status[:label] %></span>
+                </td>
+                <td>
+                  <%= link_to "View", admin_patient_path(patient), class: "dash-view-btn" %>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 28px; color: #64748b;">No patients match your search.</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

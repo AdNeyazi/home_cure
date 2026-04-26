@@ -1,0 +1,60 @@
+<section class="contact-page">
+  <div class="container">
+    <header class="contact-header">
+      <p class="contact-header__eyebrow">Contact us</p>
+      <h1>We are here to help</h1>
+      <p>Share your query and our lab support team will reach out with guidance.</p>
+    </header>
+
+    <div class="contact-layout">
+      <article class="contact-panel">
+        <% if @contact_inquiry.errors.any? %>
+          <div class="patient-form-errors">
+            <strong><%= pluralize(@contact_inquiry.errors.count, "error") %> prevented submission:</strong>
+            <ul>
+              <% @contact_inquiry.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= form_with model: @contact_inquiry, url: contact_inquiries_path, local: true, class: "contact-form" do |f| %>
+          <div class="contact-form__grid">
+            <div class="patient-field">
+              <%= f.label :full_name %>
+              <%= f.text_field :full_name, placeholder: "Your full name" %>
+            </div>
+            <div class="patient-field">
+              <%= f.label :email %>
+              <%= f.email_field :email, placeholder: "you@example.com" %>
+            </div>
+            <div class="patient-field">
+              <%= f.label :phone_number %>
+              <%= f.telephone_field :phone_number, placeholder: "Your phone number" %>
+            </div>
+            <div class="patient-field">
+              <%= f.label :subject %>
+              <%= f.text_field :subject, placeholder: "Test booking, report, support..." %>
+            </div>
+            <div class="patient-field patient-field--full">
+              <%= f.label :message %>
+              <%= f.text_area :message, rows: 6, placeholder: "Write your message here..." %>
+            </div>
+          </div>
+          <%= f.submit "Send Message", class: "admin-btn admin-btn--primary" %>
+        <% end %>
+      </article>
+
+      <aside class="contact-panel">
+        <h2>Support details</h2>
+        <ul class="contact-list">
+          <li><strong>Email:</strong> support@homecurelab.com</li>
+          <li><strong>Phone:</strong> +91 90000 00000</li>
+          <li><strong>Hours:</strong> Mon-Sat, 8:00 AM - 8:00 PM</li>
+          <li><strong>Address:</strong> Home Cure Lab</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>

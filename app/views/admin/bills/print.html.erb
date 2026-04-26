@@ -1,0 +1,54 @@
+<div class="container admin-page-wrap">
+  <div class="admin-actions-row">
+    <%= link_to "Back to Bill", admin_bill_path(@bill), class: "admin-btn admin-btn--light" %>
+    <%= link_to "Download PDF", pdf_admin_bill_path(@bill), class: "admin-btn admin-btn--primary" %>
+    <button type="button" onclick="window.print()" class="admin-btn admin-btn--light">Print</button>
+  </div>
+
+  <section class="bill-print-card">
+    <header class="bill-print-card__header">
+      <h1>Care Clinical Lab</h1>
+      <p>Opp. New police station, Near police line bus stop</p>
+      <p>Phone no.: Lab : 7447868244, Customer care : 07109-295921</p>
+      <p><strong>Bill / Reg. no:</strong> <%= @bill.bill_number %></p>
+    </header>
+
+    <div class="bill-print-meta">
+      <p><strong>Name:</strong> <%= @bill.patient.full_name %></p>
+      <p><strong>Age / Sex:</strong> <%= @bill.patient.age.presence || "-" %> / <%= @bill.patient.gender.presence || "-" %></p>
+      <p><strong>Mobile number:</strong> <%= @bill.patient.phone_number.presence || "-" %></p>
+      <p><strong>Referred by:</strong> <%= @bill.patient.doctor&.full_name.presence || "Self / Walk-in" %></p>
+      <p><strong>Date:</strong> <%= @bill.bill_date.strftime("%d/%m/%Y") %></p>
+      <p><strong>Received by:</strong> CARE CLINICAL LAB</p>
+    </div>
+
+    <table class="admin-data-table bill-print-table">
+      <thead>
+        <tr>
+          <th>S. No.</th>
+          <th>Investigations</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @bill.bill_items.each_with_index do |item, index| %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= item.test.name %></td>
+            <td><%= number_to_currency(item.line_total, unit: "Rs.") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="bill-print-totals">
+      <p><strong>Total amount:</strong> <%= number_to_currency(@bill.gross_amount, unit: "Rs.") %></p>
+      <p><strong>Discount:</strong> <%= number_to_currency(@bill.total_discount, unit: "Rs.") %></p>
+      <p><strong>Amount paid:</strong> <%= number_to_currency(@bill.amount_paid, unit: "Rs.") %></p>
+      <p><strong>Amount Paid (in words):</strong> <%= @bill.amount_paid_in_words.to_s.capitalize %></p>
+      <p><strong>Amount due:</strong> <%= number_to_currency(@bill.amount_due, unit: "Rs.") %></p>
+    </div>
+
+    <footer class="bill-print-card__footer">~~~ Thank You ~~~</footer>
+  </section>
+</div>

@@ -1,0 +1,18 @@
+<% if admin_breadcrumb_items.any? %>
+  <div class="admin-breadcrumb-bar">
+    <div class="admin-breadcrumb-bar__inner">
+      <nav class="admin-breadcrumb" aria-label="Breadcrumb">
+        <% admin_breadcrumb_items.each_with_index do |item, index| %>
+          <% if item[:path].present? && !item[:current] %>
+            <%= link_to item[:label], item[:path] %>
+          <% else %>
+            <span class="<%= "current" if item[:current] %>"><%= item[:label] %></span>
+          <% end %>
+          <% unless index == admin_breadcrumb_items.size - 1 %>
+            <span class="admin-breadcrumb__sep">/</span>
+          <% end %>
+        <% end %>
+      </nav>
+    </div>
+  </div>
+<% end %>
