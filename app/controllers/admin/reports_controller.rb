@@ -43,6 +43,5 @@ module Admin
     def report_params
       params.require(:report).permit(:patient_id, :doctor_id, :test_id, :reported_on, :file_path, :notes)
     end
-
   end
 end

@@ -47,12 +47,12 @@ class BillItem < ApplicationRecord
       pct = discount_value.to_d
       return 0.to_d if pct <= 0
 
-      [(base * pct / 100).round(2), base].min
+      [ (base * pct / 100).round(2), base ].min
     when "amount"
       amt = discount_value.to_d
       return 0.to_d if amt <= 0
 
-      [amt, base].min
+      [ amt, base ].min
     else
       0.to_d
     end

@@ -2,10 +2,10 @@ class AmountInWords
   UNITS = %w[zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen].freeze
   TENS = %w[zero ten twenty thirty forty fifty sixty seventy eighty ninety].freeze
   SCALES = [
-    [1_000_000_000, "billion"],
-    [1_000_000, "million"],
-    [1_000, "thousand"],
-    [100, "hundred"]
+    [ 1_000_000_000, "billion" ],
+    [ 1_000_000, "million" ],
+    [ 1_000, "thousand" ],
+    [ 100, "hundred" ]
   ].freeze
 
   def initialize(amount)

@@ -36,29 +36,29 @@ class BillPdfBuilder
     right_label_width = 95
 
     left_details = [
-      ["Name", bill.patient.full_name],
-      ["Age / Sex", "#{bill.patient.age.presence || "-"} / #{bill.patient.gender.presence || "-"}"],
-      ["Mobile number", bill.patient.phone_number.presence || "-"]
+      [ "Name", bill.patient.full_name ],
+      [ "Age / Sex", "#{bill.patient.age.presence || "-"} / #{bill.patient.gender.presence || "-"}" ],
+      [ "Mobile number", bill.patient.phone_number.presence || "-" ]
     ]
 
     right_details = [
-      ["Date", bill.bill_date.strftime("%d/%m/%Y")],
-      ["Referred by", bill.patient.doctor&.full_name.presence || "Self / Walk-in"],
-      ["Received by", "CARE CLINICAL LAB"]
+      [ "Date", bill.bill_date.strftime("%d/%m/%Y") ],
+      [ "Referred by", bill.patient.doctor&.full_name.presence || "Self / Walk-in" ],
+      [ "Received by", "CARE CLINICAL LAB" ]
     ]
 
-    pdf.bounding_box([pdf.bounds.left, pdf.cursor], width: pdf.bounds.width, height: 70) do
+    pdf.bounding_box([ pdf.bounds.left, pdf.cursor ], width: pdf.bounds.width, height: 70) do
       left_details.each_with_index do |(label, value), index|
         y = 68 - (index * 20)
-        pdf.draw_text "#{label}:", at: [0, y], style: :bold
-        pdf.draw_text value.to_s, at: [label_width, y]
+        pdf.draw_text "#{label}:", at: [ 0, y ], style: :bold
+        pdf.draw_text value.to_s, at: [ label_width, y ]
       end
 
       right_x = label_width + value_width
       right_details.each_with_index do |(label, value), index|
         y = 68 - (index * 20)
-        pdf.draw_text "#{label}:", at: [right_x, y], style: :bold
-        pdf.draw_text value.to_s, at: [right_x + right_label_width, y]
+        pdf.draw_text "#{label}:", at: [ right_x, y ], style: :bold
+        pdf.draw_text value.to_s, at: [ right_x + right_label_width, y ]
       end
     end
 
@@ -93,15 +93,15 @@ class BillPdfBuilder
     x = pdf.bounds.right - (left_width + value_width)
 
     lines = [
-      ["Total amount", "Rs.#{format_amount(bill.gross_amount)}"],
-      ["Discount", "Rs.#{format_amount(bill.total_discount)}"],
-      ["Amount paid", "Rs.#{format_amount(bill.amount_paid)}"],
-      ["Amount due", "Rs.#{format_amount(bill.amount_due)}"]
+      [ "Total amount", "Rs.#{format_amount(bill.gross_amount)}" ],
+      [ "Discount", "Rs.#{format_amount(bill.total_discount)}" ],
+      [ "Amount paid", "Rs.#{format_amount(bill.amount_paid)}" ],
+      [ "Amount due", "Rs.#{format_amount(bill.amount_due)}" ]
     ]
 
     lines.each do |label, value|
-      pdf.text_box "#{label}:", at: [x, pdf.cursor], width: left_width, height: 16, style: :bold
-      pdf.text_box value, at: [x + left_width, pdf.cursor], width: value_width, height: 16, align: :right
+      pdf.text_box "#{label}:", at: [ x, pdf.cursor ], width: left_width, height: 16, style: :bold
+      pdf.text_box value, at: [ x + left_width, pdf.cursor ], width: value_width, height: 16, align: :right
       pdf.move_down 16
     end
 
@@ -123,16 +123,16 @@ class BillPdfBuilder
   def draw_cell(pdf, x, y, width, height, text, align: :left, bold: false, bg: nil)
     if bg
       pdf.fill_color bg
-      pdf.fill_rectangle [x, y], width, height
+      pdf.fill_rectangle [ x, y ], width, height
       pdf.fill_color "000000"
     end
 
-    pdf.stroke_rectangle [x, y], width, height
+    pdf.stroke_rectangle [ x, y ], width, height
 
     pdf.font("Helvetica", style: (bold ? :bold : :normal)) do
       text_x = x + 6
       text_width = width - 12
-      pdf.text_box text.to_s, at: [text_x, y - 7], width: text_width, height: height, valign: :center, align: align, overflow: :truncate
+      pdf.text_box text.to_s, at: [ text_x, y - 7 ], width: text_width, height: height, valign: :center, align: align, overflow: :truncate
     end
   end
 end

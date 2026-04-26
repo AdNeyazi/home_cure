@@ -32,7 +32,7 @@ module ApplicationHelper
     return [] unless controller_path.start_with?("admin/")
 
     if controller_path == "admin/dashboard"
-      return [{ label: "Dashboard", current: true }]
+      return [ { label: "Dashboard", current: true } ]
     end
 
     section = controller_name
