@@ -23,6 +23,7 @@ default: &default
 
 development:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   database: home_cure_lab_development
 
   # The specified database role being used to connect to PostgreSQL.
