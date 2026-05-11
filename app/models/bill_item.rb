@@ -2,17 +2,21 @@
 
 class BillItem < ApplicationRecord
   DISCOUNT_TYPES = %w[none percent amount].freeze
+  STATUSES = %w[active cancelled].freeze
 
   belongs_to :bill
   belongs_to :test
+  belongs_to :test_package, optional: true
 
   validates :quantity, numericality: { only_integer: true, greater_than: 0 }
   validates :unit_price, numericality: { greater_than_or_equal_to: 0 }
   validates :discount_type, inclusion: { in: DISCOUNT_TYPES }
   validates :discount_value, numericality: { greater_than_or_equal_to: 0 }
+  validates :status, inclusion: { in: STATUSES }
   validate :percent_discount_within_range
 
   before_validation :set_unit_price_from_test, unless: :marked_for_destruction?
+  before_validation :set_default_status, unless: :marked_for_destruction?
   before_validation :normalize_discount_fields, unless: :marked_for_destruction?
   before_validation :apply_line_pricing, unless: :marked_for_destruction?
 
@@ -21,7 +25,25 @@ class BillItem < ApplicationRecord
     unit_price.to_d * quantity.to_i
   end
 
+  def cancelled?
+    status == "cancelled"
+  end
+
+  def add_on?
+    test_package_id.blank?
+  end
+
+  def investigation_name
+    return test.name if test_package.blank?
+
+    "#{test_package.name} - #{test.name}"
+  end
+
   private
+
+  def set_default_status
+    self.status = "active" if status.blank?
+  end
 
   def set_unit_price_from_test
     self.unit_price = test.price if test.present? && unit_price.blank?
@@ -34,6 +56,12 @@ class BillItem < ApplicationRecord
   end
 
   def apply_line_pricing
+    if cancelled?
+      self.discount_amount = 0
+      self.line_total = 0
+      return
+    end
+
     base = subtotal
     self.discount_amount = computed_discount_amount(base)
     self.line_total = (base - discount_amount).round(2)

@@ -78,8 +78,11 @@ class BillPdfBuilder
 
     y = start_y - row_height
     bill.bill_items.each_with_index do |item, index|
+      item_name = item.investigation_name
+      item_name = "#{item_name} (Cancelled)" if item.cancelled?
+
       draw_cell(pdf, pdf.bounds.left, y, col_sno, row_height, (index + 1).to_s, align: :center)
-      draw_cell(pdf, pdf.bounds.left + col_sno, y, col_name, row_height, item.test.name.to_s)
+      draw_cell(pdf, pdf.bounds.left + col_sno, y, col_name, row_height, item_name)
       draw_cell(pdf, pdf.bounds.left + col_sno + col_name, y, col_amount, row_height, "Rs.#{format_amount(item.line_total)}", align: :right)
       y -= row_height
     end

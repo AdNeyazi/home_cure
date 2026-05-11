@@ -26,11 +26,11 @@ class Bill < ApplicationRecord
   before_save :sync_payment_fields
 
   def gross_amount
-    bill_items.reject(&:marked_for_destruction?).sum(&:subtotal)
+    billable_items.sum(&:subtotal)
   end
 
   def total_discount
-    bill_items.reject(&:marked_for_destruction?).sum { |item| item.discount_amount.to_d }
+    billable_items.sum { |item| item.discount_amount.to_d }
   end
 
   def amount_paid_in_words
@@ -47,12 +47,16 @@ class Bill < ApplicationRecord
 
   private
 
+  def billable_items
+    bill_items.reject { |item| item.marked_for_destruction? || item.cancelled? }
+  end
+
   def set_default_bill_date
     self.bill_date ||= Date.current
   end
 
   def calculate_total_amount
-    self.total_amount = bill_items.reject(&:marked_for_destruction?).sum do |item|
+    self.total_amount = billable_items.sum do |item|
       item.line_total.to_d
     end
   end

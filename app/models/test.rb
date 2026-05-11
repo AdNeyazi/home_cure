@@ -1,6 +1,8 @@
 class Test < ApplicationRecord
   has_many :bill_items, dependent: :restrict_with_error
   has_many :reports, dependent: :nullify
+  has_many :test_package_items, dependent: :restrict_with_error
+  has_many :test_packages, through: :test_package_items
 
   validates :code, :name, presence: true
   validates :code, uniqueness: true

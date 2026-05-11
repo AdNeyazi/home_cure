@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :patients
     resources :doctors
     resources :tests
+    resources :test_packages
     resources :bills do
       member do
         get :print

@@ -65,7 +65,7 @@ module Admin
         :bill_number,
         :status,
         :amount_paid,
-        bill_items_attributes: %i[id test_id quantity unit_price discount_type discount_value _destroy]
+        bill_items_attributes: %i[id test_id test_package_id quantity unit_price discount_type discount_value status _destroy]
       )
     end
   end

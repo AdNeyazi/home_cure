@@ -21,6 +21,18 @@ class Patient < ApplicationRecord
     primary_bill.bill_items.includes(:test).map(&:test).compact
   end
 
+  def selected_packages
+    return [] unless primary_bill
+
+    primary_bill.bill_items.includes(:test_package).filter_map(&:test_package).uniq
+  end
+
+  def selected_add_on_tests
+    return [] unless primary_bill
+
+    primary_bill.bill_items.includes(:test).select(&:add_on?).map(&:test).compact
+  end
+
   def selected_test_names
     selected_tests.map(&:name).join(", ")
   end
