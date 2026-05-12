@@ -1,0 +1,55 @@
+<div class="container admin-page-wrap">
+  <section class="admin-form-card">
+    <h2 class="admin-form-card__title"><%= test_package.persisted? ? "Edit Test Package" : "Add Test Package" %></h2>
+    <p class="admin-form-card__subtitle">Group many tests under one package, such as CBC, and use it while billing patients.</p>
+
+    <% if test_package.errors.any? %>
+      <div class="patient-form-errors">
+        <strong>Please fix the following:</strong>
+        <ul>
+          <% test_package.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: [:admin, test_package], class: "admin-form" do |f| %>
+      <div class="admin-form-grid">
+        <p class="admin-form-field">
+          <%= f.label :code %>
+          <%= f.text_field :code, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field">
+          <%= f.label :price, "Package price" %>
+          <%= f.number_field :price, step: 0.01, min: 0, class: "admin-form-input" %>
+        </p>
+        <p class="admin-form-field admin-form-field--full">
+          <%= f.label :description %>
+          <%= f.text_area :description, class: "admin-form-input", rows: 4 %>
+        </p>
+      </div>
+
+      <div class="patient-tests-section">
+        <h3>Included Tests</h3>
+        <div class="admin-test-list">
+          <% selected_test_ids = test_package.tests.map(&:id) %>
+          <% @tests.each do |test| %>
+            <label class="admin-test-item">
+              <%= check_box_tag "test_package[test_ids][]", test.id, selected_test_ids.include?(test.id) %>
+              <span><%= test.name %> (<%= number_to_currency(test.price) %>)</span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="admin-form-actions">
+        <%= f.submit test_package.persisted? ? "Update Package" : "Create Package", class: "admin-btn admin-btn--primary" %>
+      </div>
+    <% end %>
+  </section>
+</div>

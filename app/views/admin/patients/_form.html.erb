@@ -58,9 +58,27 @@
       </div>
 
       <div class="patient-tests-section">
-        <h3>Select Tests</h3>
+        <h3>Select Test Packages</h3>
         <div class="admin-test-list">
-          <% selected_test_ids = patient.selected_tests.map(&:id) %>
+          <% selected_package_ids = patient.selected_packages.map(&:id) %>
+          <% @test_packages.each do |test_package| %>
+            <label class="admin-test-item">
+              <%= check_box_tag "patient[test_package_ids][]", test_package.id, selected_package_ids.include?(test_package.id) %>
+              <span>
+                <%= test_package.name %> (<%= number_to_currency(test_package.price) %>)
+                <% if test_package.tests.any? %>
+                  - <%= test_package.tests.map(&:name).join(", ") %>
+                <% end %>
+              </span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="patient-tests-section">
+        <h3>Add-on Tests</h3>
+        <div class="admin-test-list">
+          <% selected_test_ids = patient.selected_add_on_tests.map(&:id) %>
           <% @tests.each do |test| %>
             <label class="admin-test-item">
               <%= check_box_tag "patient[test_ids][]", test.id, selected_test_ids.include?(test.id) %>

@@ -34,7 +34,12 @@
         <% @bill.bill_items.each_with_index do |item, index| %>
           <tr>
             <td><%= index + 1 %></td>
-            <td><%= item.test.name %></td>
+            <td>
+              <%= item.investigation_name %>
+              <% if item.cancelled? %>
+                (Cancelled)
+              <% end %>
+            </td>
             <td><%= number_to_currency(item.line_total, unit: "Rs.") %></td>
           </tr>
         <% end %>

@@ -15,6 +15,8 @@
   <table border="1" cellpadding="6" cellspacing="0">
     <tr>
       <th>Test</th>
+      <th>Package</th>
+      <th>Status</th>
       <th>Qty</th>
       <th>Unit Price</th>
       <th>Subtotal</th>
@@ -24,6 +26,8 @@
     <% @bill.bill_items.each do |item| %>
       <tr>
         <td><%= item.test.name %></td>
+        <td><%= item.test_package&.name.presence || "Add-on" %></td>
+        <td><%= item.status.titleize %></td>
         <td><%= item.quantity %></td>
         <td><%= number_to_currency(item.unit_price) %></td>
         <td><%= number_to_currency(item.subtotal) %></td>

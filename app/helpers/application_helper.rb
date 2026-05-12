@@ -13,6 +13,8 @@ module ApplicationHelper
       controller_path == "admin/doctors"
     when :tests
       controller_path == "admin/tests"
+    when :test_packages
+      controller_path == "admin/test_packages"
     when :bills
       controller_path == "admin/bills"
     when :reports

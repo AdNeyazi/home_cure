@@ -1,0 +1,28 @@
+<section class="report-search" aria-labelledby="report-search-heading">
+  <div class="container">
+    <h2 id="report-search-heading">Find a patient report</h2>
+    <p class="report-search__subtitle">Search by patient, report details, or provider. Results will connect here once search is wired up.</p>
+
+    <div class="report-search__panel">
+      <form class="report-search-form" action="#" method="get" role="search" aria-label="Patient report search">
+        <div>
+          <label for="report-search-patient">Patient name</label>
+          <input id="report-search-patient" type="search" name="patient" placeholder="e.g. full name" autocomplete="off">
+        </div>
+        <div>
+          <label for="report-search-id">Report / bill no.</label>
+          <input id="report-search-id" type="text" name="report_ref" placeholder="Reference number" autocomplete="off">
+        </div>
+        <div>
+          <label for="report-search-doctor">Doctor</label>
+          <input id="report-search-doctor" type="text" name="doctor" placeholder="Referring doctor" autocomplete="off">
+        </div>
+        <div>
+          <label for="report-search-date">Test date</label>
+          <input id="report-search-date" type="date" name="test_date">
+        </div>
+        <button type="submit">Search reports</button>
+      </form>
+    </div>
+  </div>
+</section>

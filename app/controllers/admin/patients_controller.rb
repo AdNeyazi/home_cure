@@ -2,6 +2,7 @@ module Admin
   class PatientsController < BaseController
     before_action :set_patient, only: %i[show edit update destroy]
     before_action :load_tests, only: %i[new create edit update]
+    before_action :load_test_packages, only: %i[new create edit update]
     before_action :load_doctors, only: %i[new create edit update]
 
     def index
@@ -55,12 +56,25 @@ module Admin
       params.fetch(:patient, {}).fetch(:test_ids, [])
     end
 
+    def selected_package_ids
+      params.fetch(:patient, {}).fetch(:test_package_ids, [])
+    end
+
     def save_patient_with_tests
-      Patients::SaveWithTests.new(@patient, attributes: patient_params, test_ids: selected_test_ids).call
+      Patients::SaveWithTests.new(
+        @patient,
+        attributes: patient_params,
+        test_ids: selected_test_ids,
+        package_ids: selected_package_ids
+      ).call
     end
 
     def load_tests
       @tests = Test.alphabetical
+    end
+
+    def load_test_packages
+      @test_packages = TestPackage.includes(:tests).alphabetical
     end
 
     def load_doctors

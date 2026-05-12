@@ -32,6 +32,10 @@
       <span class="admin-sidebar__link-icon" aria-hidden="true">◇</span>
       Tests
     <% end %>
+    <%= link_to admin_test_packages_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:test_packages)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">▦</span>
+      Test Packages
+    <% end %>
     <%= link_to admin_bills_path, class: "admin-sidebar__link #{"is-active" if admin_sidebar_active?(:bills)}" do %>
       <span class="admin-sidebar__link-icon" aria-hidden="true">₹</span>
       Bills

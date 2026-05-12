@@ -1,0 +1,35 @@
+<div class="container admin-page-wrap">
+  <p class="admin-actions-row">
+    <%= link_to "Add Test Package", new_admin_test_package_path, class: "admin-btn admin-btn--primary" %>
+  </p>
+
+  <div class="admin-table-wrap">
+    <table class="admin-data-table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Package Price</th>
+          <th>Included Tests</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @test_packages.each do |test_package| %>
+          <tr>
+            <td><%= test_package.code %></td>
+            <td><%= test_package.name %></td>
+            <td><%= number_to_currency(test_package.price) %></td>
+            <td><%= test_package.test_names.presence || "-" %></td>
+            <td>
+              <div class="admin-table-actions">
+                <%= link_to "Edit", edit_admin_test_package_path(test_package) %>
+                <%= link_to "Delete", admin_test_package_path(test_package), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

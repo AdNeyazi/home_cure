@@ -35,6 +35,16 @@
               <p class="admin-form-field admin-form-field--full">
                 <%= item_fields.label :test_id, "Test" %>
                 <%= item_fields.collection_select :test_id, Test.order(:name), :id, :name, { prompt: "Select test" }, class: "admin-form-input" %>
+                <%= item_fields.hidden_field :test_package_id %>
+                <% if item_fields.object.test_package.present? %>
+                  <small>Package: <%= item_fields.object.test_package.name %></small>
+                <% else %>
+                  <small>Add-on / individual test</small>
+                <% end %>
+              </p>
+              <p class="admin-form-field">
+                <%= item_fields.label :status %>
+                <%= item_fields.select :status, BillItem::STATUSES.map { |status| [status.titleize, status] }, {}, class: "admin-form-input" %>
               </p>
               <p class="admin-form-field">
                 <%= item_fields.label :quantity %>
@@ -62,7 +72,7 @@
           </fieldset>
         <% end %>
         <p class="admin-form-help">
-          Percent discount supports 0 to 100. Fixed amount discount is capped at line subtotal.
+          Set status to cancelled to keep the package/test visible while removing it from totals. Percent discount supports 0 to 100. Fixed amount discount is capped at line subtotal.
         </p>
       </div>
 
