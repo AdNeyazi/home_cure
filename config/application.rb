@@ -16,6 +16,22 @@ module HomeCureLab
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # Propshaft: rewrite CSS @import to digested URLs (production static assets).
+    # Must run in before_initialize (not in config/initializers), which load too late.
+    config.before_initialize do
+      require Rails.root.join("lib/home_cure_lab/css_import_urls_compiler")
+
+      compilers = config.assets.compilers
+      next unless compilers.is_a?(Array)
+
+      idx = compilers.index { |(_, klass)| klass == Propshaft::Compiler::CssAssetUrls }
+      next unless idx
+
+      unless compilers.any? { |(_, klass)| klass == HomeCureLab::CssImportUrlsCompiler }
+        compilers.insert(idx + 1, [ "text/css", HomeCureLab::CssImportUrlsCompiler ])
+      end
+    end
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
