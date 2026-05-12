@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_25_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_03_091000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,11 +22,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_120000) do
     t.decimal "discount_value", precision: 10, scale: 2, default: "0.0", null: false
     t.decimal "line_total", precision: 12, scale: 2, default: "0.0", null: false
     t.integer "quantity", default: 1, null: false
+    t.string "status", default: "active", null: false
     t.bigint "test_id", null: false
+    t.bigint "test_package_id"
     t.decimal "unit_price", precision: 10, scale: 2, default: "0.0", null: false
     t.datetime "updated_at", null: false
     t.index ["bill_id"], name: "index_bill_items_on_bill_id"
+    t.index ["status"], name: "index_bill_items_on_status"
     t.index ["test_id"], name: "index_bill_items_on_test_id"
+    t.index ["test_package_id"], name: "index_bill_items_on_test_package_id"
   end
 
   create_table "bills", force: :cascade do |t|
@@ -123,6 +127,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_120000) do
     t.index ["test_id"], name: "index_reports_on_test_id"
   end
 
+  create_table "test_package_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "test_id", null: false
+    t.bigint "test_package_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["test_id"], name: "index_test_package_items_on_test_id"
+    t.index ["test_package_id", "test_id"], name: "index_test_package_items_on_test_package_id_and_test_id", unique: true
+    t.index ["test_package_id"], name: "index_test_package_items_on_test_package_id"
+  end
+
+  create_table "test_packages", force: :cascade do |t|
+    t.string "code", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "name", null: false
+    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_test_packages_on_code", unique: true
+    t.index ["name"], name: "index_test_packages_on_name"
+  end
+
   create_table "tests", force: :cascade do |t|
     t.string "code", null: false
     t.datetime "created_at", null: false
@@ -149,10 +174,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_120000) do
   end
 
   add_foreign_key "bill_items", "bills"
+  add_foreign_key "bill_items", "test_packages"
   add_foreign_key "bill_items", "tests"
   add_foreign_key "bills", "patients"
   add_foreign_key "patients", "doctors"
   add_foreign_key "reports", "doctors"
   add_foreign_key "reports", "patients"
   add_foreign_key "reports", "tests"
+  add_foreign_key "test_package_items", "test_packages"
+  add_foreign_key "test_package_items", "tests"
 end
