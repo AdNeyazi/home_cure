@@ -46,10 +46,16 @@ Run the Rails console:
 bin/rails console
 ```
 
-Run tests:
+Run the test suite (RSpec):
 
 ```bash
-bin/rails test
+bundle exec rspec
+```
+
+Run local CI (RuboCop, security scans, RSpec):
+
+```bash
+bin/ci
 ```
 
 Run security checks:
