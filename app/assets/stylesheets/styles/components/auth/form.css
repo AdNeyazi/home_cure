@@ -1,23 +1,67 @@
+.auth-form-header {
+  margin-bottom: 32px;
+}
+
+.auth-overline {
+  margin: 0 0 8px;
+}
+
+.auth-form-header h2 {
+  margin: 0;
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--lf-fg);
+}
+
+.auth-form-header__sub {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--lf-muted-fg);
+  line-height: 1.5;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .auth-form .field {
-  margin-bottom: 12px;
+  margin: 0;
 }
 
 .auth-form .field label {
   display: block;
   margin-bottom: 6px;
-  color: #2e4059;
-  font-weight: 600;
-  font-size: 14px;
+  color: var(--lf-muted-fg);
+  font-weight: 500;
+  font-size: 13px;
 }
 
 .auth-form .field input[type="email"],
-.auth-form .field input[type="password"] {
+.auth-form .field input[type="password"],
+.auth-form .field input[type="text"] {
   width: 100%;
-  border: 1px solid #cdd7e6;
-  border-radius: 8px;
-  padding: 10px 12px;
+  height: 44px;
+  border: 1px solid var(--lf-border);
+  border-radius: var(--lf-radius-md);
+  padding: 0 12px;
   font: inherit;
-  color: #22344c;
+  font-size: 14px;
+  color: var(--lf-fg);
+  background: var(--lf-card);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.auth-form .field input::placeholder {
+  color: #9aa39a;
+}
+
+.auth-form .field input:focus {
+  outline: none;
+  border-color: var(--lf-primary);
+  box-shadow: var(--lf-focus-ring);
 }
 
 .auth-form .field--checkbox {
@@ -28,30 +72,137 @@
 
 .auth-form .field--checkbox label {
   margin: 0;
+  color: var(--lf-fg);
+  font-weight: 500;
 }
 
 .auth-hint {
   display: block;
-  margin-bottom: 6px;
-  color: #8090a8;
+  margin: -2px 0 6px;
+  color: var(--lf-muted-fg);
   font-size: 12px;
 }
 
 .auth-btn {
   width: 100%;
+  height: 44px;
   border: 0;
-  border-radius: 8px;
-  padding: 10px 12px;
-  background: #17c3c8;
-  color: #ffffff;
-  font-weight: 700;
+  border-radius: var(--lf-radius-md);
+  padding: 0 14px;
+  margin-top: 0;
+  background: var(--lf-primary);
+  color: var(--lf-primary-fg);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+}
+
+.auth-btn:hover {
+  background: var(--lf-primary-deep);
+}
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-links {
+  margin-top: 24px;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .auth-links p {
-  margin: 10px 0 0;
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--lf-muted-fg);
+}
+
+.auth-links p:last-child {
+  margin-bottom: 0;
 }
 
 .auth-links a {
-  color: #2d6886;
+  color: var(--lf-primary);
+  font-weight: 600;
+  transition: color 0.15s ease-in-out;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+.auth-demo {
+  margin-top: 32px;
+  padding: 16px;
+  border: 1px dashed var(--lf-border);
+  border-radius: var(--lf-radius);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.auth-demo__title {
+  margin: 0 0 12px;
+}
+
+.auth-demo__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.auth-demo__card {
+  text-align: left;
+  padding: 8px 10px;
+  border: 1px solid var(--lf-border);
+  border-radius: var(--lf-radius-md);
+  background: var(--lf-card);
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.auth-demo__card:hover {
+  background: var(--lf-bg);
+}
+
+.auth-demo__role {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lf-primary);
+}
+
+.auth-demo__email {
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--lf-muted-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#error_explanation {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: var(--lf-radius);
+  border: 1px solid #f3c7c8;
+  background: #fdecec;
+  color: var(--lf-danger);
+}
+
+#error_explanation h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lf-danger);
+}
+
+#error_explanation ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
 }

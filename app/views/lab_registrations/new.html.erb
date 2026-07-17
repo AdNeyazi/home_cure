@@ -1,0 +1,64 @@
+<% content_for :title, "Register your lab · HomeCure" %>
+
+<header class="auth-form-header">
+  <p class="auth-overline lf-overline">Get started</p>
+  <h2>Register your lab</h2>
+  <p class="auth-form-header__sub">Create your lab workspace and owner account in one step.</p>
+</header>
+
+<%= form_with url: lab_registration_path, method: :post, local: true, class: "auth-form", scope: nil do %>
+  <% if @lab.errors.any? || @user.errors.any? %>
+    <div class="auth-flash auth-flash--alert">
+      <ul style="margin:0;padding-left:1.1rem;">
+        <% (@lab.errors.full_messages + @user.errors.full_messages).uniq.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <label for="lab_name">Lab name</label>
+    <input type="text" name="lab[name]" id="lab_name" value="<%= @lab.name %>" required autofocus placeholder="City Diagnostics Lab">
+  </div>
+
+  <div class="field">
+    <label for="lab_contact_email">Lab contact email</label>
+    <input type="email" name="lab[contact_email]" id="lab_contact_email" value="<%= @lab.contact_email %>" placeholder="front.desk@citylab.com">
+  </div>
+
+  <div class="field">
+    <label for="lab_phone_number">Phone</label>
+    <input type="text" name="lab[phone_number]" id="lab_phone_number" value="<%= @lab.phone_number %>" placeholder="98XXXXXXXX">
+  </div>
+
+  <div class="field">
+    <label for="lab_address">Address</label>
+    <input type="text" name="lab[address]" id="lab_address" value="<%= @lab.address %>" placeholder="Clinic address">
+  </div>
+
+  <hr style="border:none;border-top:1px solid var(--lf-border);margin:8px 0;">
+
+  <div class="field">
+    <label for="user_email">Owner email</label>
+    <input type="email" name="user[email]" id="user_email" value="<%= @user.email %>" required autocomplete="email" placeholder="owner@citylab.com">
+  </div>
+
+  <div class="field">
+    <label for="user_password">Password</label>
+    <input type="password" name="user[password]" id="user_password" required autocomplete="new-password" placeholder="••••••••">
+  </div>
+
+  <div class="field">
+    <label for="user_password_confirmation">Confirm password</label>
+    <input type="password" name="user[password_confirmation]" id="user_password_confirmation" required autocomplete="new-password" placeholder="••••••••">
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="auth-btn">Create lab workspace →</button>
+  </div>
+<% end %>
+
+<div class="auth-links">
+  <p>Already have an account? <%= link_to "Sign in", new_user_session_path %></p>
+</div>

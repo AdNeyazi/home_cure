@@ -1,34 +1,71 @@
+<% content_for :title, "Doctors · HomeCure Lab" %>
 
-<div class="container admin-page-wrap">
-  <p class="admin-actions-row">
-    <%= link_to "Add Doctor", new_admin_doctor_path, class: "admin-btn admin-btn--primary" %>
-  </p>
-
-  <div class="admin-table-wrap">
-    <table class="admin-data-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Specialization</th>
-          <th>Email</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @doctors.each do |doctor| %>
-          <tr>
-            <td><%= doctor.full_name %></td>
-            <td><%= doctor.specialization %></td>
-            <td><%= doctor.email %></td>
-            <td>
-              <div class="admin-table-actions">
-                <%= link_to "Edit", edit_admin_doctor_path(doctor) %>
-                <%= link_to "Delete", admin_doctor_path(doctor), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-              </div>
-            </td>
-          </tr>
+<section class="dir-page lf-fade-up">
+  <header class="dir-header">
+    <div>
+      <p class="dir-header__eyebrow">Directory</p>
+      <h1 class="dir-header__title">Referring Doctors</h1>
+      <p class="dir-header__meta">
+        <%= pluralize(@doctors.size, "doctor") %>
+        <% if @q.present? %>
+          matching “<%= @q %>”
         <% end %>
-      </tbody>
-    </table>
+      </p>
+    </div>
+    <div class="dir-header__actions">
+      <%= link_to "+ New Doctor", new_admin_doctor_path, class: "dir-btn-primary" %>
+    </div>
+  </header>
+
+  <%= form_with url: admin_doctors_path, method: :get, local: true, class: "dir-search", role: "search" do %>
+    <span class="dir-search__icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+    </span>
+    <%= text_field_tag :q, @q,
+          class: "dir-search__input",
+          placeholder: "Search doctors by name or specialization...",
+          autocomplete: "off",
+          aria: { label: "Search doctors" } %>
+    <%= submit_tag "Search", class: "dir-search__submit", name: nil %>
+  <% end %>
+
+  <div class="dir-card-grid lf-stagger">
+    <% if @doctors.any? %>
+      <% @doctors.each do |doctor| %>
+        <% referred_count = doctor.patients.size %>
+        <article class="dir-card">
+          <div class="dir-card__top">
+            <div>
+              <h2 class="dir-card__name">
+                <%= link_to doctor.full_name, edit_admin_doctor_path(doctor) %>
+              </h2>
+              <p class="dir-card__meta">
+                <span class="dir-card__meta-line"><%= doctor.specialization.presence || "—" %></span>
+                <span class="dir-card__meta-line"><%= doctor.email.presence || "—" %></span>
+              </p>
+            </div>
+            <span class="dir-card__badge">
+              <%= referred_count %> <%= referred_count == 1 ? "patient" : "patients" %>
+            </span>
+          </div>
+
+          <div class="dir-card__footer">
+            <span class="dir-card__phone"><%= doctor.phone_number.presence || "—" %></span>
+            <%= link_to "Edit →", edit_admin_doctor_path(doctor), class: "dir-card__link" %>
+          </div>
+        </article>
+      <% end %>
+    <% else %>
+      <div class="dir-card-empty">
+        <% if @q.present? %>
+          No doctors match your search.
+        <% else %>
+          No referring doctors yet. Add the first one to get started.
+        <% end %>
+      </div>
+    <% end %>
   </div>
-</div>
+</section>

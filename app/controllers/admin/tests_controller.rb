@@ -3,7 +3,18 @@ module Admin
     before_action :set_test, only: %i[edit update destroy]
 
     def index
-      @tests = Test.recent_first
+      @tab = params[:tab].to_s == "packages" ? "packages" : "tests"
+      @q = params[:q].to_s.strip
+
+      tests_scope = Test.all
+      tests_scope = tests_scope.search(@q) if @q.present?
+      @tests = tests_scope.recent_first
+      @tests_count = @q.present? ? @tests.size : Test.count
+
+      packages_scope = TestPackage.includes(:tests)
+      packages_scope = packages_scope.search(@q) if @q.present?
+      @test_packages = packages_scope.recent_first
+      @packages_count = @q.present? ? @test_packages.size : TestPackage.count
     end
 
     def new

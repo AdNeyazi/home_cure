@@ -1,0 +1,57 @@
+/* LabFlow design tokens — exact values from reference UI */
+.auth-body,
+.admin-body {
+  --lf-bg: #faf9f6;
+  --lf-fg: #121614;
+  --lf-card: #ffffff;
+  --lf-primary: #2c5545;
+  --lf-primary-deep: #1a3d30;
+  --lf-primary-fg: #faf9f6;
+  --lf-muted: #f0efea;
+  --lf-muted-fg: #647067;
+  --lf-accent: #e27d60;
+  --lf-accent-soft: #d6e0d9;
+  --lf-border: #e5e7e2;
+  --lf-danger: #c5474b;
+  --lf-success: #1f6b45;
+  --lf-warning: #9a6700;
+  --lf-info: #2c5545;
+  --lf-radius: 8px;
+  --lf-radius-md: 6px;
+  --lf-radius-lg: 12px;
+  --lf-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --lf-shadow-md: 0 8px 24px rgba(18, 22, 20, 0.06);
+  --lf-font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --lf-font-display: "Manrope", "IBM Plex Sans", sans-serif;
+  --lf-focus-ring: 0 0 0 2px rgba(44, 85, 69, 0.15);
+
+  --primary: var(--lf-primary);
+  --dark: var(--lf-fg);
+  --text: var(--lf-fg);
+  --muted: var(--lf-muted-fg);
+  --line: var(--lf-border);
+  --font-sans: var(--lf-font-body);
+
+  background: var(--lf-bg);
+  color: var(--lf-fg);
+  font-family: var(--lf-font-body);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+.auth-body ::selection,
+.admin-body ::selection {
+  background: var(--lf-primary);
+  color: var(--lf-primary-fg);
+}
+
+.auth-body h1,
+.auth-body h2,
+.auth-body h3,
+.admin-body h1,
+.admin-body h2,
+.admin-body h3 {
+  font-family: var(--lf-font-display);
+  letter-spacing: -0.015em;
+  color: var(--lf-fg);
+}

@@ -1,0 +1,45 @@
+<% content_for :title, "#{@lab.name} · Platform" %>
+
+<div class="container admin-page-wrap">
+  <header class="admin-page-header">
+    <p class="lf-overline">Lab</p>
+    <h1><%= @lab.name %></h1>
+    <p>Slug: <%= @lab.slug %> · Status: <%= @lab.status.titleize %></p>
+  </header>
+
+  <div class="admin-stat-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin:24px 0;">
+    <div style="padding:16px;border:1px solid var(--lf-border);border-radius:12px;">
+      <div class="lf-overline">Patients</div>
+      <div style="font-size:1.5rem;font-weight:700;"><%= @patients_count %></div>
+    </div>
+    <div style="padding:16px;border:1px solid var(--lf-border);border-radius:12px;">
+      <div class="lf-overline">Bills</div>
+      <div style="font-size:1.5rem;font-weight:700;"><%= @bills_count %></div>
+    </div>
+    <div style="padding:16px;border:1px solid var(--lf-border);border-radius:12px;">
+      <div class="lf-overline">Staff</div>
+      <div style="font-size:1.5rem;font-weight:700;"><%= @staff_count %></div>
+    </div>
+  </div>
+
+  <div class="patient-form-card" style="margin-bottom:24px;">
+    <h2 style="margin-top:0;font-size:1.1rem;">Owners</h2>
+    <ul>
+      <% @owners.each do |owner| %>
+        <li><%= owner.email %></li>
+      <% end %>
+      <% if @owners.empty? %>
+        <li>No owners assigned.</li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="patient-form-actions">
+    <% if @lab.active? %>
+      <%= button_to "Suspend lab", platform_lab_path(@lab), method: :patch, params: { lab: { status: "suspended" } }, class: "admin-btn admin-btn--light", data: { turbo_confirm: "Suspend this lab?" } %>
+    <% else %>
+      <%= button_to "Activate lab", platform_lab_path(@lab), method: :patch, params: { lab: { status: "active" } }, class: "admin-btn admin-btn--primary" %>
+    <% end %>
+    <%= link_to "Back to labs", platform_labs_path, class: "admin-btn admin-btn--light" %>
+  </div>
+</div>

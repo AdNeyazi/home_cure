@@ -1,0 +1,14 @@
+<p>Hello<%= @invitation.name.present? ? " #{@invitation.name}" : "" %>,</p>
+
+<p>
+  <strong><%= @invitation.invited_by.email %></strong> invited you to join
+  <strong><%= @lab.name %></strong> on HomeCure as lab staff.
+</p>
+
+<p>
+  <%= link_to "Accept invitation", @accept_url %>
+</p>
+
+<p>This invitation expires on <%= @invitation.expires_at.strftime("%d %b %Y") %>.</p>
+
+<p>If you were not expecting this, you can ignore this email.</p>

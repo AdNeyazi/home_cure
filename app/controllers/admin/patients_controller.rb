@@ -6,7 +6,10 @@ module Admin
     before_action :load_doctors, only: %i[new create edit update]
 
     def index
-      @patients = Patient.with_admin_list_associations.recent_first
+      @q = params[:q].to_s.strip
+      scope = Patient.with_admin_list_associations
+      scope = scope.search_directory(@q) if @q.present?
+      @patients = scope.recent_first
     end
 
     def show; end

@@ -1,4 +1,6 @@
 class Bill < ApplicationRecord
+  include TenantScoped
+
   STATUSES = %w[pending paid cancelled].freeze
 
   belongs_to :patient
@@ -10,7 +12,7 @@ class Bill < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
   validates :amount_paid, numericality: { greater_than_or_equal_to: 0 }
   validates :amount_due, numericality: { greater_than_or_equal_to: 0 }
-  validates :bill_number, uniqueness: true, allow_blank: true
+  validates :bill_number, uniqueness: { scope: :lab_id }, allow_blank: true
   validate :amount_paid_cannot_exceed_total
   validate :paid_bill_must_have_no_due
 
@@ -64,7 +66,7 @@ class Bill < ApplicationRecord
   def assign_bill_number
     return if bill_number.present?
 
-    self.bill_number = BillNumberGenerator.new(self.class).generate
+    self.bill_number = BillNumberGenerator.new(self.class, lab_id: lab_id || Current.lab&.id).generate
   end
 
   def sync_payment_fields

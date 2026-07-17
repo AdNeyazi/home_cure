@@ -1,4 +1,6 @@
 class Doctor < ApplicationRecord
+  include TenantScoped
+
   has_many :patients, dependent: :nullify
   has_many :reports, dependent: :nullify
 

@@ -3,7 +3,9 @@
 <section class="dash-dashboard">
   <header class="dash-page-header">
     <div>
+      <p class="dash-page-header__eyebrow lf-overline">Analytics</p>
       <h1>Dashboard</h1>
+      <p class="dash-page-header__sub">Patients, billing, and lab throughput at a glance.</p>
     </div>
     <div class="dash-page-header__actions">
       <span class="dash-date-pill">Today: <%= Time.current.strftime("%d %b") %></span>
@@ -11,7 +13,7 @@
     </div>
   </header>
 
-  <div class="dash-kpi-grid">
+  <div class="dash-kpi-grid lf-stagger">
     <article class="dash-kpi-card">
       <p class="dash-kpi-card__label">Total Patients</p>
       <p class="dash-kpi-card__value"><%= @total_patients %></p>
@@ -34,7 +36,7 @@
     </article>
   </div>
 
-  <div class="dash-table-panel">
+  <div class="dash-table-panel lf-fade-up">
     <div class="dash-table-panel__head">
       <h2>All Patients (<%= @patients.size %>)</h2>
       <%= form_with url: admin_dashboard_path, method: :get, local: true, class: "dash-search" do %>

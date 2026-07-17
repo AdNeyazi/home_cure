@@ -1,0 +1,50 @@
+<% content_for :title, "Platform · HomeCure" %>
+
+<div class="container admin-page-wrap">
+  <header class="admin-page-header">
+    <p class="lf-overline">Platform</p>
+    <h1>Overview</h1>
+    <p>Manage every lab on HomeCure from one console.</p>
+  </header>
+
+  <div class="admin-stat-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:24px 0;">
+    <div class="admin-stat-card" style="padding:16px;border:1px solid var(--lf-border);border-radius:12px;">
+      <div class="lf-overline">Labs</div>
+      <div style="font-size:1.75rem;font-weight:700;"><%= @labs_count %></div>
+    </div>
+    <div class="admin-stat-card" style="padding:16px;border:1px solid var(--lf-border);border-radius:12px;">
+      <div class="lf-overline">Active</div>
+      <div style="font-size:1.75rem;font-weight:700;"><%= @active_labs_count %></div>
+    </div>
+    <div class="admin-stat-card" style="padding:16px;border:1px solid var(--lf-border);border-radius:12px;">
+      <div class="lf-overline">Lab users</div>
+      <div style="font-size:1.75rem;font-weight:700;"><%= @users_count %></div>
+    </div>
+  </div>
+
+  <div class="admin-table-wrap">
+    <h2 style="margin:0 0 12px;font-size:1.1rem;">Recent labs</h2>
+    <table class="admin-data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recent_labs.each do |lab| %>
+          <tr>
+            <td><%= lab.name %></td>
+            <td><%= lab.slug %></td>
+            <td><%= lab.status.titleize %></td>
+            <td><%= lab.created_at.strftime("%d/%m/%Y") %></td>
+            <td><%= link_to "View", platform_lab_path(lab), class: "admin-link-clear" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

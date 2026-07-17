@@ -1,34 +1,159 @@
+<% content_for :title, "Tests & Packages · HomeCure Lab" %>
 
-<div class="container admin-page-wrap">
-  <p class="admin-actions-row">
-    <%= link_to "Add Test", new_admin_test_path, class: "admin-btn admin-btn--primary" %>
-  </p>
+<section class="dir-page lf-fade-up">
+  <header class="dir-header">
+    <div>
+      <p class="dir-header__eyebrow">Catalog</p>
+      <h1 class="dir-header__title">Tests & Packages</h1>
+      <p class="dir-header__meta">
+        <%= @tests_count %> <%= "test".pluralize(@tests_count) %> ·
+        <%= @packages_count %> <%= "package".pluralize(@packages_count) %>
+      </p>
+    </div>
+    <div class="dir-header__actions">
+      <%= link_to "+ Test", new_admin_test_path, class: "dir-btn-secondary" %>
+      <%= link_to "+ Package", new_admin_test_package_path, class: "dir-btn-primary" %>
+    </div>
+  </header>
 
-  <div class="admin-table-wrap">
-    <table class="admin-data-table">
-      <thead>
-        <tr>
-          <th>Code</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @tests.each do |test| %>
-          <tr>
-            <td><%= test.code %></td>
-            <td><%= test.name %></td>
-            <td><%= number_to_currency(test.price) %></td>
-            <td>
-              <div class="admin-table-actions">
-                <%= link_to "Edit", edit_admin_test_path(test) %>
-                <%= link_to "Delete", admin_test_path(test), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <%= form_with url: admin_tests_path, method: :get, local: true, class: "dir-search", role: "search" do %>
+    <%= hidden_field_tag :tab, @tab %>
+    <span class="dir-search__icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+    </span>
+    <%= text_field_tag :q, @q,
+          class: "dir-search__input",
+          placeholder: @tab == "packages" ? "Search packages by name or code..." : "Search tests by name or code...",
+          autocomplete: "off",
+          aria: { label: "Search catalog" } %>
+    <%= submit_tag "Search", class: "dir-search__submit", name: nil %>
+  <% end %>
+
+  <div class="dir-tabs" role="tablist" aria-label="Catalog sections">
+    <%= link_to "Tests (#{@tests_count})",
+                admin_tests_path(tab: "tests", q: @q.presence),
+                class: "dir-tabs__item #{"is-active" if @tab == "tests"}",
+                role: "tab",
+                aria: { selected: @tab == "tests" } %>
+    <%= link_to "Packages (#{@packages_count})",
+                admin_tests_path(tab: "packages", q: @q.presence),
+                class: "dir-tabs__item #{"is-active" if @tab == "packages"}",
+                role: "tab",
+                aria: { selected: @tab == "packages" } %>
   </div>
-</div>
+
+  <% if @tab == "packages" %>
+    <div class="dir-card-grid lf-stagger">
+      <% if @test_packages.any? %>
+        <% @test_packages.each do |pkg| %>
+          <article class="dir-card dir-card--package">
+            <div class="dir-card__top">
+              <div>
+                <h2 class="dir-card__name">
+                  <%= link_to pkg.name, edit_admin_test_package_path(pkg) %>
+                </h2>
+                <p class="dir-card__meta">
+                  <span class="dir-card__meta-line"><%= pkg.code %></span>
+                  <% if pkg.description.present? %>
+                    <span class="dir-card__meta-line"><%= truncate(pkg.description, length: 90) %></span>
+                  <% end %>
+                </p>
+              </div>
+              <div class="dir-card__price"><%= number_to_currency(pkg.price, unit: "₹", precision: 0) %></div>
+            </div>
+
+            <div class="dir-card__list">
+              <% if pkg.tests.any? %>
+                <% pkg.tests.sort_by(&:name).each do |test| %>
+                  <div class="dir-card__list-item">
+                    <span class="dir-card__dot" aria-hidden="true"></span>
+                    <%= test.name %>
+                  </div>
+                <% end %>
+              <% else %>
+                <div class="dir-card__list-item dir-table__muted">No tests included</div>
+              <% end %>
+            </div>
+
+            <div class="dir-card__footer">
+              <span class="dir-card__phone"><%= pluralize(pkg.tests.size, "test") %></span>
+              <div class="dir-table__actions">
+                <%= link_to "Edit →", edit_admin_test_package_path(pkg), class: "dir-card__link" %>
+                <%= link_to "Delete",
+                            admin_test_package_path(pkg),
+                            class: "dir-table__action dir-table__action--muted",
+                            data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      <% else %>
+        <div class="dir-card-empty">
+          <% if @q.present? %>
+            No packages match your search.
+          <% else %>
+            No packages yet.
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="dir-panel">
+      <div class="dir-table-wrap">
+        <table class="dir-table">
+          <thead>
+            <tr>
+              <th>Test Name</th>
+              <th>Category</th>
+              <th>Sample</th>
+              <th>TAT</th>
+              <th>Normal Range</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @tests.any? %>
+              <% @tests.each do |test| %>
+                <tr>
+                  <td>
+                    <%= link_to test.name, edit_admin_test_path(test), class: "dir-table__person" %>
+                  </td>
+                  <td class="dir-table__code"><%= test.code %></td>
+                  <td class="dir-table__muted">—</td>
+                  <td class="dir-table__muted">—</td>
+                  <td class="dir-table__muted">
+                    <%= test.description.present? ? truncate(test.description, length: 40) : "—" %>
+                  </td>
+                  <td class="dir-table__amount"><%= number_to_currency(test.price, unit: "₹", precision: 0) %></td>
+                  <td>
+                    <div class="dir-table__actions">
+                      <%= link_to "Edit", edit_admin_test_path(test), class: "dir-table__action" %>
+                      <%= link_to "Delete",
+                                  admin_test_path(test),
+                                  class: "dir-table__action dir-table__action--muted",
+                                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="7" class="dir-empty">
+                  <% if @q.present? %>
+                    No tests match your search.
+                  <% else %>
+                    No tests yet.
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</section>

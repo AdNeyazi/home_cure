@@ -1,0 +1,113 @@
+<% content_for :title, "Staff · HomeCure Lab" %>
+
+<section class="admin-page-wrap container">
+  <header class="admin-page-header" style="margin-bottom: 24px;">
+    <p class="lf-overline">Team</p>
+    <h1>Staff</h1>
+    <p>Invite receptionists and technicians to your lab workspace.</p>
+  </header>
+
+  <div class="patient-form-card" style="margin-bottom: 28px;">
+    <h2 style="margin-top:0;font-size:1.1rem;">Invite staff</h2>
+    <p class="patient-form-subtitle">They’ll get a link to create a password and join <%= current_user.lab.name %>.</p>
+
+    <%= form_with model: @invitation, url: admin_staff_index_path, local: true, class: "patient-form" do |f| %>
+      <% if @invitation.errors.any? %>
+        <div class="patient-form-errors">
+          <strong><%= pluralize(@invitation.errors.count, "error") %> prevented sending:</strong>
+          <ul>
+            <% @invitation.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="patient-form-grid">
+        <div class="patient-field">
+          <%= f.label :name, "Name (optional)" %>
+          <%= f.text_field :name, placeholder: "Aisha Khan" %>
+        </div>
+        <div class="patient-field">
+          <%= f.label :email, "Work email" %>
+          <%= f.email_field :email, required: true, placeholder: "aisha@yourlab.com" %>
+        </div>
+      </div>
+
+      <div class="patient-form-actions">
+        <%= f.submit "Send invitation", class: "admin-btn admin-btn--primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @invitations.any? %>
+    <div class="admin-table-wrap" style="margin-bottom: 28px;">
+      <h2 style="margin:0 0 12px;font-size:1.1rem;">Pending invitations</h2>
+      <table class="admin-data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Expires</th>
+            <th>Invite link</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @invitations.each do |invitation| %>
+            <tr>
+              <td><%= invitation.name.presence || "—" %></td>
+              <td><%= invitation.email %></td>
+              <td><%= invitation.expires_at.strftime("%d %b %Y") %></td>
+              <td>
+                <code style="font-size:11px;word-break:break-all;"><%= staff_invitation_url(invitation.token) %></code>
+              </td>
+              <td>
+                <%= link_to "Cancel", admin_cancel_staff_invitation_path(invitation),
+                      class: "admin-link-clear",
+                      data: { turbo_method: :delete, turbo_confirm: "Cancel this invitation?" } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+
+  <div class="admin-table-wrap">
+    <h2 style="margin:0 0 12px;font-size:1.1rem;">Team members</h2>
+    <table class="admin-data-table">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Joined</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @members.each do |member| %>
+          <tr>
+            <td>
+              <%= member.email %>
+              <% if member == current_user %>
+                <span style="color:var(--lf-muted-fg);font-size:12px;"> (you)</span>
+              <% end %>
+            </td>
+            <td><%= member.lab_owner? ? "Lab owner" : "Lab staff" %></td>
+            <td><%= member.created_at.strftime("%d %b %Y") %></td>
+            <td>
+              <% if member != current_user && member.lab_staff? %>
+                <%= link_to "Remove", admin_staff_path(member),
+                      class: "admin-link-clear",
+                      data: { turbo_method: :delete, turbo_confirm: "Remove #{member.email} from this lab?" } %>
+              <% else %>
+                —
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>

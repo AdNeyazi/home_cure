@@ -1,0 +1,36 @@
+<% content_for :title, "Labs · Platform" %>
+
+<div class="container admin-page-wrap">
+  <header class="admin-page-header">
+    <p class="lf-overline">Platform</p>
+    <h1>Labs</h1>
+    <p>All registered diagnostic labs on the platform.</p>
+  </header>
+
+  <div class="admin-table-wrap">
+    <table class="admin-data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Contact</th>
+          <th>Owners</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @labs.each do |lab| %>
+          <tr>
+            <td><%= lab.name %></td>
+            <td><%= lab.slug %></td>
+            <td><%= lab.contact_email.presence || "—" %></td>
+            <td><%= lab.users.count { |u| u.role == "lab_owner" } %></td>
+            <td><%= lab.status.titleize %></td>
+            <td><%= link_to "View", platform_lab_path(lab), class: "admin-link-clear" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -3,6 +3,21 @@ module ApplicationHelper
     admin_subnav_active?(section)
   end
 
+  def platform_sidebar_active?(section)
+    case section
+    when :dashboard
+      controller_path == "platform/dashboard"
+    when :labs
+      controller_path == "platform/labs"
+    when :blog_posts
+      controller_path == "platform/blog_posts"
+    when :contact_inquiries
+      controller_path == "platform/contact_inquiries"
+    else
+      false
+    end
+  end
+
   def admin_subnav_active?(section)
     case section
     when :dashboard
@@ -21,10 +36,8 @@ module ApplicationHelper
       controller_path == "admin/reports"
     when :referral_reports
       controller_path == "admin/referral_reports"
-    when :blog_posts
-      controller_path == "admin/blog_posts"
-    when :contact_inquiries
-      controller_path == "admin/contact_inquiries"
+    when :staff
+      controller_path == "admin/staff"
     else
       false
     end
@@ -38,10 +51,10 @@ module ApplicationHelper
     end
 
     section = controller_name
-    section_path = send("admin_#{section}_path")
+    section_path = admin_section_collection_path(section)
     items = [
       { label: "Dashboard", path: admin_dashboard_path },
-      { label: section.titleize, path: section_path }
+      { label: section_breadcrumb_label(section), path: section_path }
     ]
 
     case action_name
@@ -62,6 +75,32 @@ module ApplicationHelper
     end
 
     items
+  end
+
+  def patient_display_id(patient)
+    "PAT#{patient.id.to_s.rjust(5, "0")}"
+  end
+
+  def report_display_id(report)
+    "REP#{report.id.to_s.rjust(5, "0")}"
+  end
+
+  def report_status_badge(report)
+    if report.file_path.present?
+      { label: "Completed", variant: "completed" }
+    else
+      { label: "In Process", variant: "in-process" }
+    end
+  end
+
+  def patient_age_gender(patient)
+    age = patient.age.presence
+    gender = patient.gender.to_s.strip.presence&.downcase
+    return "—" if age.blank? && gender.blank?
+    return age.to_s if gender.blank?
+    return gender if age.blank?
+
+    "#{age} · #{gender}"
   end
 
   def patient_initials(full_name)
@@ -96,6 +135,25 @@ module ApplicationHelper
   end
 
   private
+
+  def section_breadcrumb_label(section)
+    case section
+    when "bills" then "Payments"
+    when "tests" then "Tests & Packages"
+    when "test_packages" then "Packages"
+    when "staff" then "Staff"
+    else section.titleize
+    end
+  end
+
+  def admin_section_collection_path(section)
+    # Uncountable resources like "staff" expose index as admin_staff_index_path,
+    # while admin_staff_path is the member route and requires :id.
+    index_helper = "admin_#{section}_index_path"
+    return public_send(index_helper) if respond_to?(index_helper)
+
+    public_send("admin_#{section}_path")
+  end
 
   def resource_name_for_breadcrumb(resource, section)
     return "#{section.singularize.titleize} Details" if resource.blank?

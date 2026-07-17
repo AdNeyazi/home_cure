@@ -6,6 +6,10 @@ module Admin
 
     def index
       @bills = Bill.with_patient.recent_first
+      paid_scope = Bill.paid
+      @today_collection = paid_scope.where(bill_date: Date.current).sum(:amount_paid)
+      @month_collection = paid_scope.where(bill_date: Date.current.all_month).sum(:amount_paid)
+      @lifetime_collection = paid_scope.sum(:amount_paid)
     end
 
     def show; end

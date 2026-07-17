@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Sign in · HomeCure Lab" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag "app", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="auth-body">
+    <div class="auth-shell">
+      <aside class="auth-hero" aria-hidden="false">
+        <%= image_tag "/images/auth-hero.jpg", class: "auth-hero__image", alt: "Modern diagnostic lab" %>
+        <div class="auth-hero__overlay"></div>
+
+        <div class="auth-hero__brand lf-fade-up">
+          <span class="auth-hero__mark" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+              <path d="M237.66,86.34l-60-60a8,8,0,0,0-11.32,0L37.11,155.57a44.77,44.77,0,0,0,63.32,63.32L212.32,107l22.21-7.4a8,8,0,0,0,3.13-13.25Zm-32.19,6.07a8,8,0,0,0-3.13,1.93l-39.57,39.57c-8.47,2.9-21.75,4-39.07-5-10.6-5.54-20.18-8-28.56-8.73L172,43.31,217.19,88.5Z"/>
+            </svg>
+          </span>
+          <div>
+            <div class="auth-hero__name">HomeCure</div>
+            <div class="auth-hero__product">Diagnostics OS</div>
+          </div>
+        </div>
+
+        <div class="auth-hero__body lf-fade-up">
+          <p class="auth-hero__eyebrow">Diagnostic Lab Management</p>
+          <h1 class="auth-hero__title">
+            Precision. Care.<br>
+            <span class="auth-hero__accent">Trust.</span>
+          </h1>
+          <p class="auth-hero__copy">
+            A single workspace for patients, orders, reports and revenue —
+            built for the pace of a busy diagnostic lab.
+          </p>
+        </div>
+
+        <p class="auth-hero__footer lf-fade-up">© <%= Time.current.year %> HomeCure · v1.0</p>
+      </aside>
+
+      <main class="auth-panel">
+        <div class="auth-panel__inner lf-fade-up">
+          <div class="auth-panel__brand-mobile">
+            <span class="auth-hero__mark" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                <path d="M237.66,86.34l-60-60a8,8,0,0,0-11.32,0L37.11,155.57a44.77,44.77,0,0,0,63.32,63.32L212.32,107l22.21-7.4a8,8,0,0,0,3.13-13.25Zm-32.19,6.07a8,8,0,0,0-3.13,1.93l-39.57,39.57c-8.47,2.9-21.75,4-39.07-5-10.6-5.54-20.18-8-28.56-8.73L172,43.31,217.19,88.5Z"/>
+              </svg>
+            </span>
+            <div class="auth-hero__name">HomeCure</div>
+          </div>
+
+          <% if notice.present? %>
+            <p class="auth-flash auth-flash--notice"><%= notice %></p>
+          <% end %>
+          <% if alert.present? %>
+            <p class="auth-flash auth-flash--alert"><%= alert %></p>
+          <% end %>
+
+          <%= yield %>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

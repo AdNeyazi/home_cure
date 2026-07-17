@@ -1,0 +1,551 @@
+/* Public marketing landing — LabFlow-aligned product site */
+
+.marketing-body {
+  --lf-bg: #faf9f6;
+  --lf-fg: #121614;
+  --lf-card: #ffffff;
+  --lf-primary: #2c5545;
+  --lf-primary-deep: #1a3d30;
+  --lf-primary-fg: #faf9f6;
+  --lf-muted: #f0efea;
+  --lf-muted-fg: #647067;
+  --lf-accent: #e27d60;
+  --lf-border: #e5e7e2;
+  --lf-radius: 8px;
+  --lf-radius-lg: 12px;
+  --lf-font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --lf-font-display: "Manrope", "IBM Plex Sans", sans-serif;
+
+  --primary: var(--lf-primary);
+  --dark: var(--lf-fg);
+  --text: var(--lf-fg);
+  --muted: var(--lf-muted-fg);
+  --line: var(--lf-border);
+  --font-sans: var(--lf-font-body);
+
+  background: var(--lf-bg);
+  color: var(--lf-fg);
+  font-family: var(--lf-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.marketing-body h1,
+.marketing-body h2,
+.marketing-body h3 {
+  font-family: var(--lf-font-display);
+  letter-spacing: -0.02em;
+  color: var(--lf-fg);
+}
+
+.marketing-body ::selection {
+  background: var(--lf-primary);
+  color: var(--lf-primary-fg);
+}
+
+/* —— Hero —— */
+.mkt-hero {
+  position: relative;
+  min-height: min(92vh, 820px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  color: #f7f5f0;
+}
+
+.mkt-hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.mkt-hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 18, 14, 0.35) 0%, rgba(10, 18, 14, 0.72) 55%, rgba(10, 18, 14, 0.88) 100%),
+    linear-gradient(90deg, rgba(10, 18, 14, 0.55) 0%, rgba(10, 18, 14, 0.15) 100%);
+}
+
+.mkt-hero__content {
+  position: relative;
+  z-index: 1;
+  width: min(720px, 92%);
+  margin: 0 auto 0 4%;
+  padding: 0 0 72px;
+}
+
+.mkt-hero__brand {
+  margin: 0 0 18px;
+  font-family: var(--lf-font-display);
+  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: #fff;
+}
+
+.mkt-hero__brand span {
+  color: #b8d4c6;
+}
+
+.mkt-hero__title {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+  font-weight: 650;
+  line-height: 1.25;
+  color: #f3f0ea;
+}
+
+.mkt-hero__copy {
+  margin: 14px 0 0;
+  max-width: 38ch;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(243, 240, 234, 0.82);
+}
+
+.mkt-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.mkt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: var(--lf-radius);
+  border: 1px solid transparent;
+  font-family: var(--lf-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.mkt-btn--primary {
+  background: var(--lf-primary);
+  color: var(--lf-primary-fg) !important;
+}
+
+.mkt-btn--primary:hover {
+  background: var(--lf-primary-deep);
+}
+
+.mkt-btn--ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff !important;
+}
+
+.mkt-btn--ghost:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mkt-btn--ghost-dark {
+  background: transparent;
+  border-color: var(--lf-border);
+  color: var(--lf-fg) !important;
+}
+
+.mkt-btn--ghost-dark:hover {
+  border-color: var(--lf-primary);
+  color: var(--lf-primary) !important;
+}
+
+/* —— Sections —— */
+.mkt-section {
+  padding: 88px 0;
+  scroll-margin-top: 80px;
+}
+
+.mkt-section--muted {
+  background: var(--lf-muted);
+}
+
+.mkt-section__header {
+  max-width: 36rem;
+  margin-bottom: 48px;
+}
+
+.mkt-section__header h2 {
+  margin: 10px 0 0;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.mkt-section__header p {
+  margin: 12px 0 0;
+  color: var(--lf-muted-fg);
+  font-size: 1.05rem;
+}
+
+.mkt-section__header .lf-overline {
+  color: var(--lf-primary);
+}
+
+/* —— Product preview (dashboard mock) —— */
+.mkt-preview {
+  margin: 0 0 56px;
+  border: 1px solid var(--lf-border);
+  border-radius: var(--lf-radius-lg);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(18, 22, 20, 0.08);
+}
+
+.mkt-preview__chrome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  background: #f0efea;
+  border-bottom: 1px solid var(--lf-border);
+}
+
+.mkt-preview__chrome > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cfcbc0;
+}
+
+.mkt-preview__url {
+  margin-left: 10px;
+  flex: 1;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid var(--lf-border);
+  color: var(--lf-muted-fg);
+  font-size: 11px;
+}
+
+.mkt-preview__shell {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 340px;
+}
+
+.mkt-preview__side {
+  padding: 18px 14px;
+  background: #121614;
+  color: #a8b0aa;
+}
+
+.mkt-preview__brand {
+  font-family: var(--lf-font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #faf9f6;
+}
+
+.mkt-preview__brand span {
+  color: #8fbfa8;
+}
+
+.mkt-preview__lab {
+  margin: 4px 0 18px;
+  font-size: 11px;
+  color: #7a847d;
+}
+
+.mkt-preview__side nav {
+  display: grid;
+  gap: 4px;
+}
+
+.mkt-preview__side nav span {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.mkt-preview__side nav span.is-active {
+  background: rgba(143, 191, 168, 0.16);
+  color: #faf9f6;
+}
+
+.mkt-preview__main {
+  padding: 20px 22px 24px;
+  background: var(--lf-bg);
+}
+
+.mkt-preview__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.mkt-preview__head h3 {
+  margin: 4px 0 0;
+  font-size: 1.35rem;
+}
+
+.mkt-preview__pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 6px;
+  background: var(--lf-primary);
+  color: #faf9f6;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mkt-preview__kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.mkt-preview__kpis > div {
+  padding: 12px;
+  border: 1px solid var(--lf-border);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.mkt-preview__kpis small {
+  display: block;
+  color: var(--lf-muted-fg);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mkt-preview__kpis strong {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--lf-font-display);
+  font-size: 1.35rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.mkt-preview__kpis .is-warn { color: #9a6700; }
+.mkt-preview__kpis .is-ok { color: #1f6b45; }
+
+.mkt-preview__table {
+  border: 1px solid var(--lf-border);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.mkt-preview__table-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--lf-border);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.mkt-preview__search {
+  color: var(--lf-muted-fg);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.mkt-preview__row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--lf-border);
+  font-size: 13px;
+}
+
+.mkt-preview__row:last-child {
+  border-bottom: 0;
+}
+
+.mkt-preview__row span:nth-child(2) {
+  color: var(--lf-muted-fg);
+}
+
+.mkt-preview__badge {
+  display: inline-flex;
+  min-width: 72px;
+  justify-content: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.mkt-preview__badge.is-ok {
+  background: #e6f4ec;
+  color: #1f6b45;
+}
+
+.mkt-preview__badge.is-warn {
+  background: #f8efd8;
+  color: #9a6700;
+}
+
+.mkt-preview__badge.is-info {
+  background: #e7eeea;
+  color: #2c5545;
+}
+
+.mkt-capabilities {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 28px 24px;
+  border-top: 1px solid var(--lf-border);
+  padding-top: 36px;
+}
+
+.mkt-capability h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.mkt-capability p {
+  margin: 0;
+  color: var(--lf-muted-fg);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.mkt-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.mkt-step__num {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--lf-font-display);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--lf-primary);
+}
+
+.mkt-step h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.mkt-step p {
+  margin: 0;
+  color: var(--lf-muted-fg);
+  line-height: 1.55;
+}
+
+.mkt-cta {
+  padding: 96px 0;
+  border-top: 1px solid var(--lf-border);
+}
+
+.mkt-cta__inner {
+  max-width: 40rem;
+}
+
+.mkt-cta__brand {
+  margin: 0 0 12px;
+  font-family: var(--lf-font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.mkt-cta__brand span {
+  color: var(--lf-primary);
+}
+
+.mkt-cta h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  font-weight: 750;
+}
+
+.mkt-cta p {
+  margin: 12px 0 0;
+  color: var(--lf-muted-fg);
+  font-size: 1.05rem;
+}
+
+@media (max-width: 1000px) {
+  .mkt-capabilities {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mkt-steps {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .mkt-preview__shell {
+    grid-template-columns: 1fr;
+  }
+
+  .mkt-preview__side {
+    display: none;
+  }
+
+  .mkt-preview__kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .mkt-hero {
+    min-height: 78vh;
+    align-items: flex-end;
+  }
+
+  .mkt-hero__content {
+    margin: 0 auto;
+    width: min(92%, 520px);
+    padding-bottom: 48px;
+  }
+
+  .mkt-capabilities {
+    grid-template-columns: 1fr;
+  }
+
+  .mkt-section {
+    padding: 64px 0;
+  }
+
+  .mkt-preview__row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .mkt-preview__row span:nth-child(2) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-hero__content {
+    animation: none;
+  }
+}

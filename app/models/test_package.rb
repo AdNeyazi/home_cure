@@ -1,4 +1,6 @@
 class TestPackage < ApplicationRecord
+  include TenantScoped
+
   has_many :test_package_items, dependent: :destroy
   has_many :tests, through: :test_package_items
   has_many :bill_items, dependent: :nullify
@@ -6,12 +8,13 @@ class TestPackage < ApplicationRecord
   accepts_nested_attributes_for :test_package_items, allow_destroy: true
 
   validates :code, :name, presence: true
-  validates :code, uniqueness: true
+  validates :code, uniqueness: { scope: :lab_id }
   validates :price, numericality: { greater_than_or_equal_to: 0 }
   validate :must_have_at_least_one_test
 
   scope :recent_first, -> { order(created_at: :desc) }
   scope :alphabetical, -> { order(:name) }
+  scope :search, ->(query) { search_by_fields(query, :code, :name) }
 
   def test_names
     tests.order(:name).pluck(:name).join(", ")

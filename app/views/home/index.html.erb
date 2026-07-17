@@ -1,5 +1,95 @@
-<% content_for :title, "Pathology Lab Management System" %>
+<% content_for :title, "HomeCure — Diagnostics OS for every lab" %>
 
-<main class="medi-landing">
-  <%= render "test_cards" %>
+<main class="mkt">
+  <section class="mkt-hero" aria-label="HomeCure product">
+    <%= image_tag "/images/auth-hero.jpg", class: "mkt-hero__image", alt: "" %>
+    <div class="mkt-hero__veil" aria-hidden="true"></div>
+    <div class="mkt-hero__content lf-fade-up">
+      <p class="mkt-hero__brand">Home<span>Cure</span></p>
+      <h1 class="mkt-hero__title">Diagnostics OS for every lab</h1>
+      <p class="mkt-hero__copy">
+        One workspace for patients, orders, billing, and reports —
+        built so each lab runs separately on the same platform.
+      </p>
+      <div class="mkt-hero__actions">
+        <%= link_to "Register your lab", new_lab_registration_path, class: "mkt-btn mkt-btn--primary" %>
+        <%= link_to "Sign in", new_user_session_path, class: "mkt-btn mkt-btn--ghost" %>
+      </div>
+    </div>
+  </section>
+
+  <section id="product" class="mkt-section">
+    <div class="container">
+      <header class="mkt-section__header lf-fade-up">
+        <p class="lf-overline">Product</p>
+        <h2>Everything a diagnostic lab needs to run the day</h2>
+        <p>From front desk to final report — without mixing data across labs.</p>
+      </header>
+
+      <%= render "home/product_preview" %>
+
+      <div class="mkt-capabilities lf-stagger">
+        <article class="mkt-capability">
+          <h3>Patients</h3>
+          <p>Register patients, link referring doctors, and keep the full visit history in one place.</p>
+        </article>
+        <article class="mkt-capability">
+          <h3>Catalog</h3>
+          <p>Manage tests and packages with codes and pricing that stay unique to your lab.</p>
+        </article>
+        <article class="mkt-capability">
+          <h3>Billing</h3>
+          <p>Generate bills with discounts, track dues, and print or download PDF receipts.</p>
+        </article>
+        <article class="mkt-capability">
+          <h3>Reports</h3>
+          <p>Track sample status through delivery and keep report files attached to the patient.</p>
+        </article>
+        <article class="mkt-capability">
+          <h3>Referral analytics</h3>
+          <p>See which doctors drive volume so your lab can grow referral relationships.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="mkt-section mkt-section--muted">
+    <div class="container">
+      <header class="mkt-section__header lf-fade-up">
+        <p class="lf-overline">How it works</p>
+        <h2>From registration to a live lab workspace</h2>
+        <p>Self-serve setup — your lab is isolated the moment you create it.</p>
+      </header>
+
+      <ol class="mkt-steps lf-stagger">
+        <li class="mkt-step">
+          <span class="mkt-step__num" aria-hidden="true">01</span>
+          <h3>Register your lab</h3>
+          <p>Create the lab profile and owner account in one step. You land in your dashboard immediately.</p>
+        </li>
+        <li class="mkt-step">
+          <span class="mkt-step__num" aria-hidden="true">02</span>
+          <h3>Set up your catalog</h3>
+          <p>Add tests, packages, and referring doctors so front-desk work is ready on day one.</p>
+        </li>
+        <li class="mkt-step">
+          <span class="mkt-step__num" aria-hidden="true">03</span>
+          <h3>Run daily operations</h3>
+          <p>Register patients, bill visits, and deliver reports — only your lab’s data, every time.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="mkt-cta">
+    <div class="container mkt-cta__inner lf-fade-up">
+      <p class="mkt-cta__brand">Home<span>Cure</span></p>
+      <h2>Ready to run your lab on HomeCure?</h2>
+      <p>Create your workspace in minutes. No shared patient lists. No mixed billing.</p>
+      <div class="mkt-hero__actions">
+        <%= link_to "Register your lab", new_lab_registration_path, class: "mkt-btn mkt-btn--primary" %>
+        <%= link_to "Talk to us", new_contact_inquiry_path, class: "mkt-btn mkt-btn--ghost-dark" %>
+      </div>
+    </div>
+  </section>
 </main>

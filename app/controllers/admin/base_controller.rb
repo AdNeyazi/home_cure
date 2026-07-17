@@ -3,6 +3,6 @@ module Admin
     include CrudResponses
 
     layout "admin"
-    before_action :require_admin!
+    before_action :require_lab_member!
   end
 end

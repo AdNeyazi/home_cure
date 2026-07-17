@@ -1,4 +1,4 @@
-module Admin
+module Platform
   class ContactInquiriesController < BaseController
     before_action :set_contact_inquiry, only: %i[show destroy]
 
@@ -10,9 +10,9 @@ module Admin
 
     def destroy
       if @contact_inquiry.destroy
-        redirect_deleted admin_contact_inquiries_path, "Inquiry"
+        redirect_deleted platform_contact_inquiries_path, "Inquiry"
       else
-        redirect_with_errors admin_contact_inquiries_path, @contact_inquiry
+        redirect_with_errors platform_contact_inquiries_path, @contact_inquiry
       end
     end
 

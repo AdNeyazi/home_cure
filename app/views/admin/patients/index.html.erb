@@ -1,33 +1,81 @@
+<% content_for :title, "Patients · HomeCure Lab" %>
 
-<div class="container admin-page-wrap">
-  <p class="admin-actions-row">
-    <%= link_to "Add Patient", new_admin_patient_path, class: "admin-btn admin-btn--primary" %>
-  </p>
-
-  <div class="admin-table-wrap">
-    <table class="admin-data-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Referred By Doctor</th>
-          <th>Tests</th>
-          <th>Total Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @patients.each do |patient| %>
-          <tr>
-            <td><%= link_to patient.full_name, admin_patient_path(patient) %></td>
-            <td><%= patient.phone_number %></td>
-            <td><%= patient.email %></td>
-            <td><%= patient.doctor&.full_name.presence || "Self / Walk-in" %></td>
-            <td><%= patient.selected_test_names.presence || "-" %></td>
-            <td><%= number_to_currency(patient.selected_tests_total) %></td>
-          </tr>
+<section class="dir-page lf-fade-up">
+  <header class="dir-header">
+    <div>
+      <p class="dir-header__eyebrow">Directory</p>
+      <h1 class="dir-header__title">Patients</h1>
+      <p class="dir-header__meta">
+        <%= pluralize(@patients.size, "record") %>
+        <% if @q.present? %>
+          matching “<%= @q %>”
         <% end %>
-      </tbody>
-    </table>
+      </p>
+    </div>
+    <div class="dir-header__actions">
+      <%= link_to "+ New Patient", new_admin_patient_path, class: "dir-btn-primary" %>
+    </div>
+  </header>
+
+  <%= form_with url: admin_patients_path, method: :get, local: true, class: "dir-search", role: "search" do %>
+    <span class="dir-search__icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+    </span>
+    <%= text_field_tag :q, @q,
+          class: "dir-search__input",
+          placeholder: "Search by name, phone, or patient ID...",
+          autocomplete: "off",
+          aria: { label: "Search patients" } %>
+    <%= submit_tag "Search", class: "dir-search__submit", name: nil %>
+  <% end %>
+
+  <div class="dir-panel">
+    <div class="dir-table-wrap">
+      <table class="dir-table">
+        <thead>
+          <tr>
+            <th>Patient ID</th>
+            <th>Name</th>
+            <th>Age / Gender</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @patients.any? %>
+            <% @patients.each do |patient| %>
+              <tr>
+                <td class="dir-table__id"><%= patient_display_id(patient) %></td>
+                <td>
+                  <%= link_to patient.full_name.to_s.upcase, admin_patient_path(patient), class: "dir-table__name" %>
+                </td>
+                <td class="dir-table__muted">
+                  <%= patient_age_gender(patient) %>
+                </td>
+                <td><%= patient.phone_number.presence || "—" %></td>
+                <td class="<%= "dir-table__empty" if patient.email.blank? %>">
+                  <%= patient.email.presence || "—" %>
+                </td>
+                <td class="dir-table__muted"><%= patient.created_at.strftime("%d %b %Y") %></td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="6" class="dir-empty">
+                <% if @q.present? %>
+                  No patients match your search.
+                <% else %>
+                  No patients yet. Create the first one to get started.
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+</section>

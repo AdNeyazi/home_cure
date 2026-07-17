@@ -2,28 +2,26 @@
   <div class="container footer__top">
     <div>
       <div class="brand footer-brand">Home<span>Cure</span></div>
-      <p>HomeCure is committed to meeting or exceeding quality and safety expectations.</p>
+      <p>Diagnostics OS for labs that need a clean workspace for patients, billing, and reports.</p>
     </div>
     <div>
-      <h4>Quick Links</h4>
+      <h4>Product</h4>
       <ul>
-        <li><a href="#">Dental implants</a></li>
-        <li><a href="#">Medical research</a></li>
-        <li><a href="#">Medical counselling</a></li>
-        <li><a href="#">Pharmaceutical advice</a></li>
+        <li><%= link_to "Overview", root_path(anchor: "product") %></li>
+        <li><%= link_to "How it works", root_path(anchor: "how-it-works") %></li>
+        <li><%= link_to "Register your lab", new_lab_registration_path %></li>
+        <li><%= link_to "Sign in", new_user_session_path %></li>
       </ul>
     </div>
     <div>
-      <h4>Our Office</h4>
+      <h4>Resources</h4>
       <ul>
-        <li>128 W 44th St, New York, NY 10075</li>
-        <li>+366 123 444 876</li>
-        <li>ithemeslab@gmail.com</li>
-        <li>Mon - Fri: 9:00 - 18:00</li>
+        <li><%= link_to "Blog", blog_posts_path %></li>
+        <li><%= link_to "Contact", new_contact_inquiry_path %></li>
       </ul>
     </div>
   </div>
   <div class="footer__bottom">
-    <div class="container">Copyright HomeCure</div>
+    <div class="container">© <%= Time.current.year %> HomeCure · Diagnostics OS</div>
   </div>
 </footer>

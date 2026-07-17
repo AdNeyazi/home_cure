@@ -35,8 +35,13 @@
 }
 
 .admin-btn--primary {
-  background: var(--primary);
-  color: #ffffff;
+  background: var(--lf-primary);
+  color: var(--lf-primary-fg);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.admin-btn--primary:hover {
+  background: var(--lf-primary-deep);
 }
 
 .admin-link-clear {
@@ -51,9 +56,10 @@
 .admin-table-wrap {
   width: 100%;
   overflow-x: auto;
-  border: 1px solid #bfeae7;
-  border-radius: 6px;
-  background: #fff;
+  border: 1px solid var(--lf-border, #e5e7e2);
+  border-radius: var(--lf-radius, 8px);
+  background: var(--lf-card, #fff);
+  box-shadow: var(--lf-shadow, none);
 }
 
 .admin-data-table {
@@ -64,16 +70,16 @@
 }
 
 .admin-data-table thead th {
-  background: #9edfd8;
-  color: #2f4a50;
+  background: var(--lf-muted, #f0efea);
+  color: var(--lf-muted-fg, #647067);
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   text-align: left;
   padding: 12px 14px;
-  border-bottom: 1px solid #8fd5cd;
-  border-right: 1px solid #b6e7e1;
+  border-bottom: 1px solid var(--lf-border, #e5e7e2);
+  border-right: 1px solid var(--lf-border, #e5e7e2);
 }
 
 .admin-data-table thead th:last-child {
@@ -82,18 +88,26 @@
 
 .admin-data-table tbody td {
   padding: 11px 14px;
-  border-bottom: 1px solid #d9f1ee;
-  border-right: 1px solid #c9ece7;
-  color: #32485a;
+  border-bottom: 1px solid var(--lf-border, #e5e7e2);
+  border-right: 1px solid var(--lf-border, #e5e7e2);
+  color: var(--lf-fg, #121614);
   white-space: nowrap;
 }
 
 .admin-data-table tbody tr:nth-child(odd) td {
-  background: #eef9f7;
+  background: var(--lf-bg, #faf9f6);
 }
 
 .admin-data-table tbody tr:nth-child(even) td {
-  background: #ffffff;
+  background: var(--lf-card, #ffffff);
+}
+
+.admin-data-table tbody tr {
+  transition: background-color 0.15s ease-in-out;
+}
+
+.admin-data-table tbody tr:hover td {
+  background: var(--lf-bg, #faf9f6) !important;
 }
 
 .admin-data-table tbody tr:last-child td {
@@ -264,16 +278,17 @@ textarea.admin-form-input {
   position: relative;
   z-index: 2;
   margin-bottom: 16px;
-  border: 1px solid #dce6f0;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #f7fffd, #eef9f7);
-  padding: 14px;
+  border: 1px solid var(--lf-border, #e5e7e2);
+  border-radius: var(--lf-radius-lg, 12px);
+  background: var(--lf-card, #ffffff);
+  box-shadow: var(--lf-shadow, none);
+  padding: 16px;
 }
 
 .admin-report-filter-card__title {
   margin: 0 0 12px;
-  font-size: 17px;
-  color: #22354d;
+  font-size: 16px;
+  color: var(--lf-fg, #121614);
 }
 
 .admin-report-filter-grid {
@@ -319,8 +334,8 @@ textarea.admin-form-input {
 
 .admin-report-filter-input:focus {
   outline: none;
-  border-color: #56b4ac;
-  box-shadow: 0 0 0 3px rgba(86, 180, 172, 0.2);
+  border-color: var(--lf-primary, #2c5545);
+  box-shadow: 0 0 0 3px rgba(44, 85, 69, 0.15);
 }
 
 .admin-report-filter-note {

@@ -1,32 +1,54 @@
-<section class="auth-page">
-  <div class="auth-card">
-    <h2>Log in</h2>
+<% content_for :title, "Sign in · HomeCure Lab" %>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
-      <div class="field">
-        <%= f.label :email %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-      </div>
+<header class="auth-form-header">
+  <p class="auth-overline lf-overline">Sign in</p>
+  <h2>Welcome back</h2>
+  <p class="auth-form-header__sub">Enter your credentials to access the lab workspace.</p>
+</header>
 
-      <div class="field">
-        <%= f.label :password %>
-        <%= f.password_field :password, autocomplete: "current-password" %>
-      </div>
+<div data-controller="auth-demo">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@lab.com", data: { auth_demo_target: "email" } %>
+    </div>
 
-      <% if devise_mapping.rememberable? %>
-        <div class="field field--checkbox">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me %>
-        </div>
-      <% end %>
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.password_field :password, autocomplete: "current-password", placeholder: "••••••••", data: { auth_demo_target: "password" } %>
+    </div>
 
-      <div class="actions">
-        <%= f.submit "Log in", class: "auth-btn" %>
+    <% if devise_mapping.rememberable? %>
+      <div class="field field--checkbox">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me %>
       </div>
     <% end %>
 
-    <div class="auth-links">
-      <%= render "devise/shared/links" %>
+    <div class="actions">
+      <%= f.submit "Sign in →", class: "auth-btn" %>
     </div>
-  </div>
-</section>
+  <% end %>
+
+  <aside class="auth-demo" aria-label="Quick demo accounts">
+    <p class="auth-demo__title lf-overline">Quick demo accounts</p>
+    <div class="auth-demo__grid">
+      <button type="button" class="auth-demo__card" data-action="auth-demo#fill" data-email="admin@lab.com" data-password="admin123">
+        <div class="auth-demo__role">Lab Owner</div>
+        <div class="auth-demo__email">admin@lab.com</div>
+      </button>
+      <button type="button" class="auth-demo__card" data-action="auth-demo#fill" data-email="staff@lab.com" data-password="admin123">
+        <div class="auth-demo__role">Lab Staff</div>
+        <div class="auth-demo__email">staff@lab.com</div>
+      </button>
+      <button type="button" class="auth-demo__card" data-action="auth-demo#fill" data-email="super@homecure.com" data-password="admin123">
+        <div class="auth-demo__role">Super Admin</div>
+        <div class="auth-demo__email">super@homecure.com</div>
+      </button>
+    </div>
+  </aside>
+</div>
+
+<div class="auth-links">
+  <%= render "devise/shared/links" %>
+</div>

@@ -1,0 +1,45 @@
+<aside class="admin-sidebar">
+  <div class="admin-sidebar__brand">
+    <div class="admin-sidebar__logo" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+        <path d="M237.66,86.34l-60-60a8,8,0,0,0-11.32,0L37.11,155.57a44.77,44.77,0,0,0,63.32,63.32L212.32,107l22.21-7.4a8,8,0,0,0,3.13-13.25Zm-32.19,6.07a8,8,0,0,0-3.13,1.93l-39.57,39.57c-8.47,2.9-21.75,4-39.07-5-10.6-5.54-20.18-8-28.56-8.73L172,43.31,217.19,88.5Z"/>
+      </svg>
+    </div>
+    <%= link_to root_path, class: "admin-sidebar__brand-text" do %>
+      <div class="admin-sidebar__title">Home<span>Cure</span></div>
+      <div class="admin-sidebar__tagline">Platform</div>
+    <% end %>
+  </div>
+
+  <nav class="admin-sidebar__nav" aria-label="Platform">
+    <p class="admin-sidebar__section-label lf-overline">Console</p>
+    <%= link_to platform_root_path, class: "admin-sidebar__link #{"is-active" if platform_sidebar_active?(:dashboard)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">◉</span>
+      Overview
+    <% end %>
+    <%= link_to platform_labs_path, class: "admin-sidebar__link #{"is-active" if platform_sidebar_active?(:labs)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">◎</span>
+      Labs
+    <% end %>
+
+    <p class="admin-sidebar__section-label lf-overline">Marketing</p>
+    <%= link_to platform_blog_posts_path, class: "admin-sidebar__link #{"is-active" if platform_sidebar_active?(:blog_posts)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">▤</span>
+      Blog
+    <% end %>
+    <%= link_to platform_contact_inquiries_path, class: "admin-sidebar__link #{"is-active" if platform_sidebar_active?(:contact_inquiries)}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">✉</span>
+      Inquiries
+    <% end %>
+
+    <p class="admin-sidebar__section-label lf-overline">Account</p>
+    <%= link_to edit_user_registration_path, class: "admin-sidebar__link #{"is-active" if request.path.include?("/users/edit")}" do %>
+      <span class="admin-sidebar__link-icon" aria-hidden="true">⚙</span>
+      Settings
+    <% end %>
+  </nav>
+
+  <div class="admin-sidebar__footer">
+    © <%= Time.current.year %> HomeCure Platform
+  </div>
+</aside>

@@ -1,27 +1,32 @@
 .navbar {
-  background: #fff;
-  border-bottom: 1px solid #eceef2;
+  background: rgba(250, 249, 246, 0.92);
+  border-bottom: 1px solid var(--lf-border, #e5e7e2);
   position: sticky;
   top: 0;
   z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
 .navbar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 64px;
+  gap: 16px;
 }
 
 .brand {
-  font-size: 46px;
-  font-family: Georgia, "Times New Roman", serif;
-  color: #1d2530;
+  font-size: 1.55rem;
+  font-family: var(--lf-font-display, "Manrope", sans-serif);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--lf-fg, #121614);
   padding: 0;
   margin: 0;
 }
 
 .brand span {
-  color: var(--primary);
+  color: var(--lf-primary, #2c5545);
 }
 
 .nav-links {
@@ -29,64 +34,57 @@
   padding: 0;
   list-style: none;
   display: flex;
-  gap: 25px;
+  gap: 22px;
 }
 
 .nav-links a {
-  color: #212530;
+  color: var(--lf-muted-fg, #647067);
   font-size: 13px;
-  text-transform: uppercase;
   font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.nav-links a:hover {
+  color: var(--lf-fg, #121614);
 }
 
 .nav-auth {
   display: flex;
-  gap: 12px;
-}
-
-.nav-auth a {
-  color: #465064;
-  font-size: 13px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .nav-auth__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 78px;
-  padding: 8px 14px;
-  border-radius: 999px;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 6px;
   border: 1px solid transparent;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .nav-auth__btn--admin {
-  color: #ffffff !important;
-  background: linear-gradient(135deg, #17c3c8, #0ea5aa);
-  box-shadow: 0 6px 14px rgba(23, 195, 200, 0.28);
+  color: #faf9f6 !important;
+  background: var(--lf-primary, #2c5545);
 }
 
 .nav-auth__btn--admin:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 9px 18px rgba(23, 195, 200, 0.36);
+  background: var(--lf-primary-deep, #1a3d30);
 }
 
 .nav-auth__btn--account {
-  color: #20506a !important;
-  border-color: #b8d7e2;
-  background: #f4fbfe;
+  color: var(--lf-fg, #121614) !important;
+  border-color: var(--lf-border, #e5e7e2);
+  background: transparent;
 }
 
 .nav-auth__btn--account:hover {
-  background: #eaf7fb;
-  border-color: #9ec8d7;
-}
-
-@media (max-width: 1100px) {
-  .brand { font-size: 38px; }
+  border-color: var(--lf-primary, #2c5545);
+  color: var(--lf-primary, #2c5545) !important;
 }
 
 @media (max-width: 900px) {

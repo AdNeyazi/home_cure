@@ -167,3 +167,207 @@ blog_posts.each do |attrs|
 end
 
 puts "Blog posts seeded: #{blog_posts.count}"
+
+# ---------------------------------------------------------------------------
+# Platform super admin + demo lab (idempotent)
+# ---------------------------------------------------------------------------
+
+super_email = ENV.fetch("SUPER_ADMIN_EMAIL", "super@homecure.com")
+super_password = ENV.fetch("SUPER_ADMIN_PASSWORD", "admin123")
+
+super_admin = User.find_or_initialize_by(email: super_email)
+super_admin.role = "super_admin"
+super_admin.lab = nil
+if super_admin.new_record?
+  super_admin.password = super_password
+  super_admin.password_confirmation = super_password
+end
+super_admin.save!
+puts "Super admin ready: #{super_admin.email} / #{super_password}"
+
+lab = Lab.find_or_initialize_by(slug: "demo-diagnostics")
+lab.assign_attributes(
+  name: "Demo Diagnostics",
+  status: "active",
+  contact_email: "front.desk@demodx.com",
+  phone_number: "9800000000",
+  address: "100 Demo Street, Pune"
+)
+lab.save!
+Current.lab = lab
+puts "Demo lab ready: #{lab.name} (#{lab.slug})"
+
+admin_email = ENV.fetch("ADMIN_EMAIL", "admin@lab.com")
+admin_password = ENV.fetch("ADMIN_PASSWORD", "admin123")
+
+admin = User.find_or_initialize_by(email: admin_email)
+admin.role = "lab_owner"
+admin.lab = lab
+if admin.new_record?
+  admin.password = admin_password
+  admin.password_confirmation = admin_password
+end
+admin.save!
+puts "Lab owner ready: #{admin.email} / #{admin_password}"
+
+staff_email = ENV.fetch("STAFF_EMAIL", "staff@lab.com")
+staff_password = ENV.fetch("STAFF_PASSWORD", "admin123")
+
+staff = User.find_or_initialize_by(email: staff_email)
+staff.role = "lab_staff"
+staff.lab = lab
+if staff.new_record?
+  staff.password = staff_password
+  staff.password_confirmation = staff_password
+end
+staff.save!
+puts "Lab staff ready: #{staff.email} / #{staff_password}"
+
+tests_data = [
+  { code: "CBC", name: "Complete Blood Count", price: 350, description: "Hb, RBC, WBC, platelets" },
+  { code: "LFT", name: "Liver Function Test", price: 700, description: "Bilirubin, SGOT, SGPT, ALP" },
+  { code: "KFT", name: "Kidney Function Test", price: 750, description: "Creatinine, urea, uric acid" },
+  { code: "LIPID", name: "Lipid Profile", price: 650, description: "Cholesterol, LDL, HDL, TG" },
+  { code: "TSH", name: "Thyroid Stimulating Hormone", price: 300, description: "0.4 - 4.0 mIU/L" },
+  { code: "T3T4", name: "Thyroid Profile (T3, T4, TSH)", price: 550, description: "Full thyroid panel" },
+  { code: "HBA1C", name: "HbA1c (Glycated Hemoglobin)", price: 450, description: "Below 5.7% normal" },
+  { code: "FBS", name: "Fasting Blood Sugar", price: 150, description: "70 - 100 mg/dL" },
+  { code: "VITD", name: "Vitamin D (25-OH)", price: 1200, description: "30 - 100 ng/mL" },
+  { code: "VITB12", name: "Vitamin B12", price: 900, description: "200 - 900 pg/mL" },
+  { code: "URINE", name: "Urine Routine & Microscopy", price: 200, description: "Physical, chemical, microscopic" },
+  { code: "ESR", name: "Erythrocyte Sedimentation Rate", price: 150, description: "0 - 20 mm/hr" }
+]
+
+tests_data.each do |attrs|
+  test = Test.find_or_initialize_by(code: attrs[:code])
+  test.assign_attributes(attrs)
+  test.save!
+end
+puts "Tests seeded: #{Test.count}"
+
+packages_data = [
+  { code: "PKG-BASIC", name: "Basic Health Checkup", price: 999,
+    description: "Essential screening for routine annual checkups",
+    test_codes: %w[CBC FBS URINE ESR] },
+  { code: "PKG-DIAB", name: "Diabetes Care Package", price: 799,
+    description: "Complete sugar monitoring panel",
+    test_codes: %w[FBS HBA1C URINE] },
+  { code: "PKG-THYRO", name: "Thyroid Care Package", price: 749,
+    description: "Full thyroid function assessment",
+    test_codes: %w[T3T4 TSH CBC] },
+  { code: "PKG-FULL", name: "Full Body Checkup", price: 2499,
+    description: "Comprehensive head-to-toe health screening",
+    test_codes: %w[CBC LFT KFT LIPID TSH FBS URINE VITD] }
+]
+
+packages_data.each do |attrs|
+  pkg = TestPackage.find_or_initialize_by(code: attrs[:code])
+  pkg.assign_attributes(attrs.except(:test_codes))
+  pkg.test_ids = Test.where(code: attrs[:test_codes]).pluck(:id)
+  pkg.save!
+end
+puts "Test packages seeded: #{TestPackage.count}"
+
+doctors_data = [
+  { full_name: "Dr. Anjali Verma", specialization: "Cardiologist", phone_number: "9812345602", email: "anjali.verma@heartline.in" },
+  { full_name: "Dr. Rajesh Kumar", specialization: "General Physician", phone_number: "9812345601", email: "rajesh.kumar@citycare.in" },
+  { full_name: "Dr. Sameer Iyer", specialization: "Endocrinologist", phone_number: "9812345603", email: "sameer.iyer@mediplus.in" },
+  { full_name: "Dr. Shagufta Zarrin", specialization: "Gynecologist", phone_number: "9812345604", email: "shagufta.zarrin@femicare.in" },
+  { full_name: "Dr. Pooja Nair", specialization: "Pediatrician", phone_number: "9812345605", email: "pooja.nair@childfirst.in" }
+]
+
+doctors_data.each do |attrs|
+  doctor = Doctor.find_or_initialize_by(email: attrs[:email])
+  doctor.assign_attributes(attrs)
+  doctor.save!
+end
+puts "Doctors seeded: #{Doctor.count}"
+
+doctor_by_email = Doctor.all.index_by(&:email)
+
+patients_data = [
+  { full_name: "Priya Patel", age: 34, gender: "female", phone_number: "9820011234", email: "priya@example.com",
+    address: "12 MG Road, Pune", doctor_email: "rajesh.kumar@citycare.in",
+    package_codes: %w[PKG-BASIC], test_codes: %w[VITD], bill_status: "paid", days_ago: 12, report: :completed },
+  { full_name: "Rohan Mehta", age: 45, gender: "male", phone_number: "9820011235", email: "rohan@example.com",
+    address: "45 Link Road, Mumbai", doctor_email: "anjali.verma@heartline.in",
+    package_codes: %w[PKG-FULL], test_codes: [], bill_status: "paid", days_ago: 10, report: :completed },
+  { full_name: "Sunita Rao", age: 62, gender: "female", phone_number: "9820011236", email: "sunita@example.com",
+    address: "8 Jayanagar, Bengaluru", doctor_email: "sameer.iyer@mediplus.in",
+    package_codes: %w[PKG-DIAB], test_codes: %w[KFT], bill_status: "paid", days_ago: 7, report: :processing },
+  { full_name: "Vikram Singh", age: 28, gender: "male", phone_number: "9820011237", email: "vikram@example.com",
+    address: "23 Civil Lines, Delhi", doctor_email: nil,
+    package_codes: [], test_codes: %w[CBC LIPID], bill_status: "pending", days_ago: 4, report: :processing },
+  { full_name: "Aisha Khan", age: 39, gender: "female", phone_number: "9820011238", email: "aisha@example.com",
+    address: "67 Banjara Hills, Hyderabad", doctor_email: "shagufta.zarrin@femicare.in",
+    package_codes: %w[PKG-THYRO], test_codes: [], bill_status: "paid", days_ago: 3, report: :completed },
+  { full_name: "Shabab Quddusi", age: 25, gender: "male", phone_number: "9209255426", email: nil,
+    address: "5 Fraser Road, Patna", doctor_email: "rajesh.kumar@citycare.in",
+    package_codes: [], test_codes: %w[FBS URINE], bill_status: "pending", days_ago: 2, report: :none },
+  { full_name: "Ayesha Siddiqua", age: 32, gender: "female", phone_number: "7447868244", email: nil,
+    address: "19 Park Street, Kolkata", doctor_email: "pooja.nair@childfirst.in",
+    package_codes: %w[PKG-BASIC], test_codes: %w[VITB12], bill_status: "pending", days_ago: 1, report: :none },
+  { full_name: "Arjun Deshmukh", age: 51, gender: "male", phone_number: "9820011240", email: "arjun@example.com",
+    address: "31 FC Road, Pune", doctor_email: "anjali.verma@heartline.in",
+    package_codes: [], test_codes: %w[LFT KFT], bill_status: "paid", days_ago: 0, report: :processing }
+]
+
+patients_data.each do |attrs|
+  next if Patient.exists?(phone_number: attrs[:phone_number])
+
+  patient = Patient.new
+  doctor = attrs[:doctor_email] && doctor_by_email[attrs[:doctor_email]]
+
+  saved = Patients::SaveWithTests.new(
+    patient,
+    attributes: {
+      full_name: attrs[:full_name],
+      age: attrs[:age],
+      gender: attrs[:gender],
+      phone_number: attrs[:phone_number],
+      email: attrs[:email],
+      address: attrs[:address],
+      doctor_id: doctor&.id
+    },
+    test_ids: Test.where(code: attrs[:test_codes]).pluck(:id),
+    package_ids: TestPackage.where(code: attrs[:package_codes]).pluck(:id)
+  ).call
+
+  raise "Failed to seed patient #{attrs[:full_name]}" unless saved
+
+  created_at = attrs[:days_ago].days.ago
+  patient.update_columns(created_at: created_at, updated_at: created_at)
+
+  bill = patient.primary_bill
+  if bill
+    bill.bill_date = created_at.to_date
+    bill.status = attrs[:bill_status]
+    bill.amount_paid = bill.total_amount if attrs[:bill_status] == "paid"
+    bill.save!
+  end
+
+  case attrs[:report]
+  when :completed
+    test = patient.selected_tests.first
+    Report.create!(
+      patient: patient,
+      doctor: doctor,
+      test: test,
+      reported_on: created_at.to_date + 1.day,
+      file_path: "reports/#{patient.full_name.parameterize}-#{test&.code&.downcase || "panel"}.pdf",
+      notes: "Report delivered to patient."
+    )
+  when :processing
+    Report.create!(
+      patient: patient,
+      doctor: doctor,
+      test: patient.selected_tests.first,
+      reported_on: created_at.to_date,
+      file_path: nil,
+      notes: "Sample collected, awaiting lab results."
+    )
+  end
+end
+
+puts "Patients seeded: #{Patient.count} (with bills: #{Bill.count}, reports: #{Report.count})"
+Current.lab = nil

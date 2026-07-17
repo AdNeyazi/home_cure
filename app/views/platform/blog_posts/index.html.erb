@@ -1,7 +1,7 @@
 
 <div class="container admin-page-wrap">
   <div class="admin-actions-row">
-    <%= link_to "New Post", new_admin_blog_post_path, class: "admin-btn admin-btn--primary" %>
+    <%= link_to "New Post", new_platform_blog_post_path, class: "admin-btn admin-btn--primary" %>
   </div>
 
   <div class="admin-table-wrap">
@@ -24,8 +24,8 @@
             <td><%= post.published? ? "Published" : "Draft" %></td>
             <td>
               <div class="admin-table-actions">
-                <%= link_to "Edit", edit_admin_blog_post_path(post), class: "admin-link-clear" %>
-                <%= link_to "Delete", admin_blog_post_path(post), class: "admin-link-clear", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+                <%= link_to "Edit", edit_platform_blog_post_path(post), class: "admin-link-clear" %>
+                <%= link_to "Delete", platform_blog_post_path(post), class: "admin-link-clear", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
               </div>
             </td>
           </tr>

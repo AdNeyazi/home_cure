@@ -1,4 +1,4 @@
-module Admin
+module Platform
   class BlogPostsController < BaseController
     before_action :set_blog_post, only: %i[edit update destroy]
 
@@ -13,7 +13,7 @@ module Admin
     def create
       @blog_post = BlogPost.new(blog_post_params)
       if @blog_post.save
-        redirect_created admin_blog_posts_path, "Blog post"
+        redirect_created platform_blog_posts_path, "Blog post"
       else
         render_form_failure :new
       end
@@ -23,7 +23,7 @@ module Admin
 
     def update
       if @blog_post.update(blog_post_params)
-        redirect_updated admin_blog_posts_path, "Blog post"
+        redirect_updated platform_blog_posts_path, "Blog post"
       else
         render_form_failure :edit
       end
@@ -31,9 +31,9 @@ module Admin
 
     def destroy
       if @blog_post.destroy
-        redirect_deleted admin_blog_posts_path, "Blog post"
+        redirect_deleted platform_blog_posts_path, "Blog post"
       else
-        redirect_with_errors admin_blog_posts_path, @blog_post
+        redirect_with_errors platform_blog_posts_path, @blog_post
       end
     end
 

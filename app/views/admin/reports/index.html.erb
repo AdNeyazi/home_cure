@@ -1,39 +1,70 @@
+<% content_for :title, "Reports · HomeCure Lab" %>
 
-<div class="container admin-page-wrap">
-  <div class="admin-actions-row">
-    <%= link_to "Add Report", new_admin_report_path, class: "admin-btn admin-btn--primary" %>
-    <%= link_to "Doctor Referral Business", admin_referral_reports_path, class: "admin-btn admin-btn--light" %>
-  </div>
+<section class="dir-page lf-fade-up">
+  <header class="dir-header">
+    <div>
+      <p class="dir-header__eyebrow">Results</p>
+      <h1 class="dir-header__title">Reports</h1>
+      <p class="dir-header__meta"><%= pluralize(@reports.size, "report") %></p>
+    </div>
+    <div class="dir-header__actions">
+      <%= link_to "Enter Results", new_admin_report_path, class: "dir-btn-primary" %>
+    </div>
+  </header>
 
-  <div class="admin-table-wrap">
-    <table class="admin-data-table admin-data-table--reports">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Patient</th>
-          <th>Doctor</th>
-          <th>Test</th>
-          <th>File</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @reports.each do |report| %>
+  <div class="dir-panel">
+    <div class="dir-table-wrap">
+      <table class="dir-table">
+        <thead>
           <tr>
-            <td><%= report.reported_on&.strftime("%d/%m/%Y") || "-" %></td>
-            <td><%= report.patient.full_name %></td>
-            <td><%= report.doctor&.full_name || "-" %></td>
-            <td><%= report.test&.name || "-" %></td>
-            <td class="admin-report-file"><%= report.file_path.presence || "-" %></td>
-            <td>
-              <div class="admin-table-actions">
-                <%= link_to "Edit", edit_admin_report_path(report), class: "admin-link-clear" %>
-                <%= link_to "Delete", admin_report_path(report), class: "admin-link-clear", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-              </div>
-            </td>
+            <th>Order</th>
+            <th>Patient</th>
+            <th>Results</th>
+            <th>Status</th>
+            <th>Updated</th>
+            <th>Actions</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% if @reports.any? %>
+            <% @reports.each do |report| %>
+              <% status = report_status_badge(report) %>
+              <tr>
+                <td class="dir-table__code"><%= report_display_id(report) %></td>
+                <td>
+                  <%= link_to report.patient.full_name, admin_patient_path(report.patient), class: "dir-table__person" %>
+                </td>
+                <td class="dir-table__muted">
+                  <% if report.test.present? %>
+                    <%= report.test.name %>
+                  <% else %>
+                    —
+                  <% end %>
+                </td>
+                <td>
+                  <span class="dir-badge dir-badge--<%= status[:variant] %>"><%= status[:label] %></span>
+                </td>
+                <td class="dir-table__muted">
+                  <%= report.reported_on&.strftime("%d %b %Y") || "—" %>
+                </td>
+                <td>
+                  <div class="dir-table__actions">
+                    <%= link_to "Edit", edit_admin_report_path(report), class: "dir-table__action" %>
+                    <%= link_to "Delete",
+                                admin_report_path(report),
+                                class: "dir-table__action dir-table__action--muted",
+                                data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="6" class="dir-empty">No reports yet.</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+</section>

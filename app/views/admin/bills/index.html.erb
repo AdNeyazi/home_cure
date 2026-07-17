@@ -1,51 +1,76 @@
+<% content_for :title, "Payments · HomeCure Lab" %>
 
-<div class="container admin-page-wrap">
-  <div class="admin-actions-row">
-    <%= link_to "Generate Bill", new_admin_bill_path, class: "admin-btn admin-btn--primary" %>
+<section class="dir-page lf-fade-up">
+  <header class="dir-header">
+    <div>
+      <p class="dir-header__eyebrow">Billing</p>
+      <h1 class="dir-header__title">Payments & Collections</h1>
+      <p class="dir-header__meta"><%= pluralize(@bills.size, "payment") %></p>
+    </div>
+    <div class="dir-header__actions">
+      <%= link_to "+ Generate Bill", new_admin_bill_path, class: "dir-btn-primary" %>
+    </div>
+  </header>
+
+  <div class="dir-stats lf-stagger">
+    <article class="dir-stat">
+      <p class="dir-stat__label">Today's Collection</p>
+      <p class="dir-stat__value"><%= number_to_currency(@today_collection, unit: "₹", precision: 0) %></p>
+    </article>
+    <article class="dir-stat">
+      <p class="dir-stat__label">This Month</p>
+      <p class="dir-stat__value"><%= number_to_currency(@month_collection, unit: "₹", precision: 0) %></p>
+    </article>
+    <article class="dir-stat dir-stat--accent">
+      <p class="dir-stat__label">Lifetime</p>
+      <p class="dir-stat__value"><%= number_to_currency(@lifetime_collection, unit: "₹", precision: 0) %></p>
+    </article>
   </div>
 
-  <div class="admin-table-wrap">
-    <table class="admin-data-table admin-data-table--bills">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Bill No</th>
-          <th>Date</th>
-          <th>Patient</th>
-          <th>Status</th>
-          <th>Total</th>
-          <th>Paid</th>
-          <th>Due</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @bills.each do |bill| %>
+  <div class="dir-panel">
+    <div class="dir-table-wrap">
+      <table class="dir-table">
+        <thead>
           <tr>
-            <td>#<%= bill.id %></td>
-            <td><%= bill.bill_number %></td>
-            <td><%= bill.bill_date.strftime("%d/%m/%Y") %></td>
-            <td><%= bill.patient.full_name %></td>
-            <td>
-              <span class="admin-status-badge admin-status-badge--<%= bill.status %>">
-                <%= bill.status.titleize %>
-              </span>
-            </td>
-            <td><%= number_to_currency(bill.total_amount) %></td>
-            <td><%= number_to_currency(bill.amount_paid) %></td>
-            <td><%= number_to_currency(bill.amount_due) %></td>
-            <td>
-              <div class="admin-table-actions">
-                <%= link_to "View", admin_bill_path(bill), class: "admin-link-clear" %>
-                <%= link_to "Edit", edit_admin_bill_path(bill), class: "admin-link-clear" %>
-                <%= link_to "Print", print_admin_bill_path(bill), class: "admin-link-clear" %>
-                <%= link_to "PDF", pdf_admin_bill_path(bill), class: "admin-link-clear" %>
-                <%= link_to "Delete", admin_bill_path(bill), class: "admin-link-clear", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-              </div>
-            </td>
+            <th>Receipt</th>
+            <th>Date</th>
+            <th>Order</th>
+            <th>Amount</th>
+            <th>Mode</th>
+            <th>Collected by</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% if @bills.any? %>
+            <% @bills.each do |bill| %>
+              <tr>
+                <td>
+                  <%= link_to bill.bill_number.presence || "BILL-#{bill.id}",
+                              admin_bill_path(bill),
+                              class: "dir-table__code" %>
+                </td>
+                <td class="dir-table__muted"><%= bill.bill_date.strftime("%d %b %Y") %></td>
+                <td class="dir-table__muted"><%= patient_display_id(bill.patient) %></td>
+                <td class="dir-table__amount"><%= number_to_currency(bill.amount_paid, unit: "₹", precision: 0) %></td>
+                <td>
+                  <span class="dir-table__mode"><%= bill.status %></span>
+                </td>
+                <td>
+                  <div class="dir-table__actions">
+                    <%= link_to "View", admin_bill_path(bill), class: "dir-table__action" %>
+                    <%= link_to "Edit", edit_admin_bill_path(bill), class: "dir-table__action dir-table__action--muted" %>
+                    <%= link_to "PDF", pdf_admin_bill_path(bill), class: "dir-table__action dir-table__action--muted" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="6" class="dir-empty">No payments yet.</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+</section>

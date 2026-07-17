@@ -1,9 +1,9 @@
 <section class="contact-page">
   <div class="container">
     <header class="contact-header">
-      <p class="contact-header__eyebrow">Contact us</p>
-      <h1>We are here to help</h1>
-      <p>Share your query and our lab support team will reach out with guidance.</p>
+      <p class="contact-header__eyebrow">Contact</p>
+      <h1>Talk to us about your lab</h1>
+      <p>Questions about onboarding, demos, or moving your lab onto HomeCure? Send a note and we’ll follow up.</p>
     </header>
 
     <div class="contact-layout">
@@ -27,32 +27,31 @@
             </div>
             <div class="patient-field">
               <%= f.label :email %>
-              <%= f.email_field :email, placeholder: "you@example.com" %>
+              <%= f.email_field :email, placeholder: "you@yourlab.com" %>
             </div>
             <div class="patient-field">
               <%= f.label :phone_number %>
-              <%= f.telephone_field :phone_number, placeholder: "Your phone number" %>
+              <%= f.telephone_field :phone_number, placeholder: "Phone number" %>
             </div>
             <div class="patient-field">
               <%= f.label :subject %>
-              <%= f.text_field :subject, placeholder: "Test booking, report, support..." %>
+              <%= f.text_field :subject, placeholder: "Demo, onboarding, partnership..." %>
             </div>
             <div class="patient-field patient-field--full">
               <%= f.label :message %>
-              <%= f.text_area :message, rows: 6, placeholder: "Write your message here..." %>
+              <%= f.text_area :message, rows: 6, placeholder: "Tell us about your lab and what you need..." %>
             </div>
           </div>
-          <%= f.submit "Send Message", class: "admin-btn admin-btn--primary" %>
+          <%= f.submit "Send message", class: "admin-btn admin-btn--primary" %>
         <% end %>
       </article>
 
       <aside class="contact-panel">
-        <h2>Support details</h2>
+        <h2>Prefer to start now?</h2>
         <ul class="contact-list">
+          <li><%= link_to "Register your lab →", new_lab_registration_path %></li>
+          <li><%= link_to "Sign in to your workspace →", new_user_session_path %></li>
           <li><strong>Email:</strong> support@homecurelab.com</li>
-          <li><strong>Phone:</strong> +91 90000 00000</li>
-          <li><strong>Hours:</strong> Mon-Sat, 8:00 AM - 8:00 PM</li>
-          <li><strong>Address:</strong> Home Cure Lab</li>
         </ul>
       </aside>
     </div>

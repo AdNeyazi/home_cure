@@ -22,8 +22,8 @@
             <td><%= inquiry.created_at.strftime("%d/%m/%Y %I:%M %p") %></td>
             <td>
               <div class="admin-table-actions">
-                <%= link_to "View", admin_contact_inquiry_path(inquiry), class: "admin-link-clear" %>
-                <%= link_to "Delete", admin_contact_inquiry_path(inquiry), class: "admin-link-clear", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+                <%= link_to "View", platform_contact_inquiry_path(inquiry), class: "admin-link-clear" %>
+                <%= link_to "Delete", platform_contact_inquiry_path(inquiry), class: "admin-link-clear", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
               </div>
             </td>
           </tr>

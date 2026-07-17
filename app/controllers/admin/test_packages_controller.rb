@@ -4,7 +4,7 @@ module Admin
     before_action :load_tests, only: %i[new create edit update]
 
     def index
-      @test_packages = TestPackage.includes(:tests).recent_first
+      redirect_to admin_tests_path(tab: "packages", q: params[:q])
     end
 
     def new

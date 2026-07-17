@@ -3,7 +3,10 @@ module Admin
     before_action :set_doctor, only: %i[edit update destroy]
 
     def index
-      @doctors = Doctor.recent_first
+      @q = params[:q].to_s.strip
+      scope = Doctor.includes(:patients)
+      scope = scope.search(@q) if @q.present?
+      @doctors = scope.recent_first
     end
 
     def new

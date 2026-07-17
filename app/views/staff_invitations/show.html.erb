@@ -1,0 +1,44 @@
+<% content_for :title, "Accept invitation · HomeCure" %>
+
+<header class="auth-form-header">
+  <p class="auth-overline lf-overline">Staff invitation</p>
+  <h2>Join <%= @invitation.lab.name %></h2>
+  <p class="auth-form-header__sub">
+    Create a password for <strong><%= @invitation.email %></strong> to access the lab workspace.
+  </p>
+</header>
+
+<%= form_with url: staff_invitation_path(@invitation.token), method: :post, local: true, class: "auth-form", scope: nil do %>
+  <% if @user.errors.any? %>
+    <div class="auth-flash auth-flash--alert">
+      <ul style="margin:0;padding-left:1.1rem;">
+        <% @user.errors.full_messages.uniq.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <label for="user_email">Email</label>
+    <input type="email" id="user_email" value="<%= @invitation.email %>" disabled>
+  </div>
+
+  <div class="field">
+    <label for="user_password">Password</label>
+    <input type="password" name="user[password]" id="user_password" required autocomplete="new-password" placeholder="••••••••">
+  </div>
+
+  <div class="field">
+    <label for="user_password_confirmation">Confirm password</label>
+    <input type="password" name="user[password_confirmation]" id="user_password_confirmation" required autocomplete="new-password" placeholder="••••••••">
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="auth-btn">Join workspace →</button>
+  </div>
+<% end %>
+
+<div class="auth-links">
+  <p>Already have an account? <%= link_to "Sign in", new_user_session_path %></p>
+</div>
